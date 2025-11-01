@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SingleHumanTile from "./SingleHumanTile";
+import SingleHumanTile from "./Multiuse/SingleHumanTile";
 
 export default function AllHumanTiles() {
     const [humans, setHumans] = useState([])

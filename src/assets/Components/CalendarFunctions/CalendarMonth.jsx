@@ -19,6 +19,7 @@ export default function CalendarMonth({month, year}) {
     const daysInMonth = new Date(year, month, 0).getDate()
     const lastDayInMonth = new Date(year, month, daysInMonth)
     const lastWeekdayInMonth = lastDayInMonth.getDay()
+    const polishMonthsNames = {"1": "Styczneń", "2": "Luty", "3": "Marzec", "4": "Kwiecień", "5":"Maj", "6": "Czerwiec", "7": "Lipiec", "8": "Sierpień", "9": "Wrzesień", "10": "Październik", "11": "Listopad", "12": "Grudzień"}
     const numberOfGhostDaysAfter = (6 - lastWeekdayInMonth) % 7
    
     let ghostDaysBefore = []
@@ -29,7 +30,8 @@ export default function CalendarMonth({month, year}) {
         }
     } 
     for (let i=0; i<daysInMonth; i++) {
-        allRealDays.push(<CalendarDay ></CalendarDay>)
+        const dayString = `${i} ${polishMonthsNames[month].substring(0,3)}`
+        allRealDays.push(<CalendarDay >${dayString}</CalendarDay>)
     }
     return (
         <div style={{justifyContent: "space-evenly"}}>

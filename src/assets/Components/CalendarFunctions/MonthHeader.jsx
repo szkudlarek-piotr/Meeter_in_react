@@ -1,14 +1,15 @@
 import styled from "styled-components"
 
 const MonthHeaderStyled = styled.div`
-    margin-left: calc(10% - 2px);
-    margin-right: calc(10% - 2px);
+    margin-left: calc(11% - 2px);
+    margin-right: calc(11% - 2px);
     border: 2px solid black;
     border-radius: 25px;
     height: 50px;
     font-size: 30px;
     font-family: Arial;
     font-weight: 700;
+    width: 78%;
 
     display: flex;
     align-items: center;
