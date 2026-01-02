@@ -6,7 +6,9 @@ import FrontendToAddPlace from './assets/Components/FrontendToAddPlace.jsx'
 import AllHumanTiles from './assets/Components/AllHumans.jsx'
 import { ChoiceOption } from './assets/Components/ChoiceOption.jsx'
 import Calendar from './assets/Components/CalendarFunctions/Calendar.jsx'
-import FrontendToAddWedding from './assets/Components/FrontendToAddWedding.jsx'
+import FrontendToAddVisit from './assets/Components/FrontendToAddVisit.jsx'
+import FrontendToAddMeeting from './assets/Components/FrontendToAddMeeting.jsx'
+//import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
 import { useState } from 'react'
 
 import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
@@ -35,10 +37,11 @@ function App() {
       mainContent = "Tu będzie dodawanie człowieka";
       break;
     case "addVisit":
-      mainContent = "Tu będzie dodawnie wizyty";
+      mainContent = <FrontendToAddVisit/>
       break;
     case "addMeeting":
-      mainContent = "Tu będzie dodawanie spotkania";
+      //mainContent = "Tu będzie dodawanie spotkania";
+      mainContent = <FrontendToAddMeeting/>
       break;
     case "addClique":
       mainContent = <FrontendToAddClique/>
@@ -53,7 +56,8 @@ function App() {
       mainContent = "Tu będzie dodawanie cytatów.";
       break;
     case "addWedding":
-      mainContent = "Tu będzie dodawanie wesel.";
+      mainContent = "Tu będzie dodawanie wesel."
+      //mainContent = <FrontendToAddWedding />
       break;
     case "addDancingVideo":
       mainContent = "Tu będzie dodawanie filmikó tanecznych.";
