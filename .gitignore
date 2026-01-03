@@ -11,7 +11,20 @@ node_modules
 dist
 dist-ssr
 *.local
-src/assets/backend
+src/assets/backend/node_modules/
+src/assets/backend/videos/
+src/assets/backend/photos/
+src/assets/backend/trips/
+src/assets/backend/superpower_icons/
+src/assets/backend/events/
+src/assets/backend/cliques_photos/
+src/assets/backend/functionalPhotos/
+/src/assets/backend/.env
+/src/assets/backend/.env_clean
+
+
+
+
 
 
 
