@@ -4,10 +4,12 @@ import MainContent from './assets/Components/MainContent.jsx'
 import FrontendToAddClique from './assets/Components/FrontendToAddClique.jsx'
 import FrontendToAddPlace from './assets/Components/FrontendToAddPlace.jsx'
 import AllHumanTiles from './assets/Components/AllHumans.jsx'
-import { ChoiceOption } from './assets/Components/ChoiceOption.jsx'
+import ChoiceOption from './assets/Components/ChoiceOption.jsx'
 import Calendar from './assets/Components/CalendarFunctions/Calendar.jsx'
 import FrontendToAddVisit from './assets/Components/FrontendToAddVisit.jsx'
 import FrontendToAddMeeting from './assets/Components/FrontendToAddMeeting.jsx'
+import FrontendToAddEvent from './assets/Components/FrontendToAddEvent.jsx'
+import FrontendToAddQuote from './assets/Components/FrontendToAddQuote.jsx'
 //import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
 import { useState } from 'react'
 
@@ -47,13 +49,13 @@ function App() {
       mainContent = <FrontendToAddClique/>
       break;
     case "addEvent":
-      mainContent = "Tu będzie dodawanie eventów";
+      mainContent = <FrontendToAddEvent/>
       break;
     case "addPlace":
       mainContent = <FrontendToAddPlace/>
       break;
     case "addQuote":
-      mainContent = "Tu będzie dodawanie cytatów.";
+      mainContent = <FrontendToAddQuote/>
       break;
     case "addWedding":
       mainContent = "Tu będzie dodawanie wesel."
@@ -73,7 +75,7 @@ function App() {
       <MenuElement width="20%" withHeader={true}>
         {leftMenuOptions.map(
           (option) => 
-        <ChoiceOption id={option.id} onClick={() => setMeeterPage(option.state)}>
+        <ChoiceOption id={option.id} key={option.id} onClick={() => setMeeterPage(option.state)}>
           {option.text}
         </ChoiceOption>
         )}
