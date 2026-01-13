@@ -6,9 +6,9 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import { Box, TextField } from '@mui/material';
 
 
-export default function DatePickerWithClock({ pickerHeader, dateValue, changeDateFunction }) {
+export default function DatePickerWithClock({ pickerHeader, dateValue, changeDateFunction, id}) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} key={id} id={id}>
       <Box sx={{ width: '80%', mx: 'auto' }}>
         <DateTimePicker label={pickerHeader}
           sx={{ width: '100%' }}
