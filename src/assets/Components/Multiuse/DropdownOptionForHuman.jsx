@@ -22,6 +22,7 @@ const HumanDropdownOption= styled.div`
     &>.humanName {
         font-size: 30px;
         width: 90%;
+        font-family: Cursive;
     }
     &:hover {
         font-weight: 700;
@@ -31,7 +32,7 @@ const HumanDropdownOption= styled.div`
 
 export default function DropdownOptionForHuman({photo, name, id, onDoubleClick}) {
     return (
-        <HumanDropdownOption onDoubleClick={onDoubleClick} key={id}> 
+        <HumanDropdownOption onDoubleClick={() => onDoubleClick(id, name)} key={id}> 
             <img src={photo} alt={name}/>
             <div className="humanName">{name}</div>
         </HumanDropdownOption>)
