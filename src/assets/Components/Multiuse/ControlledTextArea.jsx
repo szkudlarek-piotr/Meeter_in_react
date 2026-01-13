@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export default function ControlledTextArea({fieldValue, changeFieldValue, placeholderValue}) {
+export default function ControlledTextArea({fieldValue, changeFieldValue, placeholderValue, id}) {
     const StyledTextarea = styled.textarea`
         rows: 10;
         cols: 80;
@@ -11,6 +11,6 @@ export default function ControlledTextArea({fieldValue, changeFieldValue, placeh
         margin-right: auto;
     `
     return (
-        <StyledTextarea value={fieldValue} placeholder={placeholderValue} onChange={(e) => changeFieldValue(e.target.value)}/>
+        <StyledTextarea id={id} key={id} value={fieldValue} placeholder={placeholderValue} onChange={(e) => changeFieldValue(e.target.value)}/>
     )
 }
