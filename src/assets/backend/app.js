@@ -24,6 +24,7 @@ app.use(bodyParser.json())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/human-photo", express.static(path.join(__dirname, "photos")));
+app.use("/event-photo", express.static(path.join(__dirname, "events")));
 
 function getHumanPhotoUrl(humanId) {
   const photosDir = path.join(__dirname, "photos");
@@ -44,6 +45,20 @@ app.get("/api/human-photo/:id", (req, res) => {
 });
 
 
+function getEventPhotoUrl(eventPhotoInput) {
+  const eventsPhotosList = fs.readdirSync('./events/');
+
+  let returnedArr = []
+  for (let photo of eventsPhotosList) {
+    if (photo.split('.')[0].includes(eventPhotoInput)) {
+      returnedArr.push({name:photo.split('.')[0], photoFileName: `${photo}`})
+    }
+  }
+  console.log(returnedArr)
+  return returnedArr
+}
+
+
 function getCliquePhotoUrl(cliqueId) {
   const photosDir = path.join(__dirname, "cliques_photos");
   const jpgPhotoPath = path.join(photosDir, `${cliqueId}.jpg`);
@@ -59,6 +74,16 @@ function getCliquePhotoUrl(cliqueId) {
   }
 }
 
+app.get("/eventPhotos", (req,res) => {
+  const photoInput = req.query.inputText
+  try {
+    const matchingPhotos = getEventPhotoUrl(photoInput)
+    res.send(matchingPhotos)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
 
 app.get("/clique-photo/:id", (req, res) => {
   const cliqueId = req.params.id;
