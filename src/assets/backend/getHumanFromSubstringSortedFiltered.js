@@ -61,7 +61,7 @@ export default async function getHumanFromSubstringSortedFiltered(deliveredSubst
             FROM party_people
             JOIN human_events_count ON party_people.ID = human_events_count.humanId
             WHERE CONCAT(name, ' ', surname) LIKE ?
-            ${excludedIdsArr.length ? `AND human_meetings_count.humanId NOT IN (${excludedPlaceholders})` : ''}
+            ${excludedIdsArr.length ? `AND human_events_count.humanId NOT IN (${excludedPlaceholders})` : ''}
             ORDER BY human_events_count.interaction_count DESC, party_people.surname, party_people.name;
             `
             break
@@ -76,7 +76,7 @@ export default async function getHumanFromSubstringSortedFiltered(deliveredSubst
             FROM party_people
             JOIN human_quotes_count ON party_people.ID = human_quotes_count.humanId
             WHERE CONCAT(name, ' ', surname) LIKE ?
-            ${excludedIdsArr.length ? `AND human_meetings_count.humanId NOT IN (${excludedPlaceholders})` : ''}
+            ${excludedIdsArr.length ? `AND human_quotes_count.humanId NOT IN (${excludedPlaceholders})` : ''}
             ORDER BY human_quotes_count.interaction_count DESC, party_people.surname, party_people.name;
             `
             break
