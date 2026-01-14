@@ -1,7 +1,12 @@
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import ChoiceOption from "../ChoiceOption"
+import sanitizeHtml from 'sanitize-html'
 import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { placesCategoriesDict } from './PlacesCategoriesDict.js'
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -17,18 +22,25 @@ const ModalBox = styled.div`
   padding: 16px;
   border-radius: 30px;
   display: flex;
+  height: 90%;           /* wysokość całego modala */
+  box-sizing: border-box;
 `
 const SuperpowersContainer = styled.div`
   display: flex;
   width: 80%;
   margin-left: 10%;
   margin-right: 10%;
+  margin-top: 30px;
+  margin-bottom: 0px;
+  justify-content: space-evenly;
 
 `
 
-const SuperpowerIcon = styled.div`
-  width: 100px;
-  height: 100px;
+const SuperpowerIcon = styled.img`
+  width: 70px;
+  height: 70px;
+  margin-left: 15px;
+  margin-right: 15px;
 `
 const MenuBox = styled.div`
     height: 100%;
@@ -44,6 +56,8 @@ const ContentBox = styled.div`
     text-align: center;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start; 
+    overflow-y: hidden;
 `
 
 const HumanPhotoInModal = styled.img`
@@ -57,24 +71,116 @@ const HumanPhotoInModal = styled.img`
 const StyledTextContainer = styled.div`
   font-size: 24px;
   font-family: cursive;
-  margin-left: 10%;
-  margin-right: 10%;
-  overflow-y: scroll;
-  min-height: 180px;
+  padding: 0 5%;
+  overflow-y: auto;       
+  flex: 1;               
+  display: flex;
+  flex-direction: column;
+  align-items: center;      
 `
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  border: 3px solid black;   /* gruba obwódka */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
+`
+
+const StyledTableHeader = styled.th`
+  border: 1px solid black;
+  min-width: 250px;
+`
+
+const StyledTableRow = styled.tr`
+  font: Arial;
+`
+
+const StyledTableCell = styled.td`
+  border: 1px solid black;
+  padding: 8px 14px;
+`
+
+const StyledQuoteInQuotesList = styled.blockquote`
+  margin: 22px 12%;
+  padding: 6px 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 26px;
+  font-style: italic;
+  line-height: 1.7;
+
+  color: #3b2f2f;
+  text-align: center;
+  text-shadow: 0.4px 0.4px 0.8px rgba(0,0,0,0.15);
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
+`
+const placeIcons = Object.fromEntries(
+  Object.entries(placesCategoriesDict).map(([category, file]) => [
+    category,
+    L.icon({
+      iconUrl: `http://localhost:3000/map-icons/${file}`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+      className: category === "Dream direction" ? "unicorn-icon" : "", // <- tu CSS dla "Dream direction"
+    }),
+  ])
+)
+
+function FitMapToMarkers({ places }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map || places.length === 0) return;
+
+    const bounds = L.latLngBounds(places.map(p => [p.lat, p.lng]));
+    map.fitBounds(bounds, { padding: [20, 20] }); // padding = margines w px
+  }, [map, places]);
+
+  return null;
+}
+
+const getIconSafe = (category) => placeIcons[category] || L.Icon.Default.prototype
 
 export default function HumanModal({ isDisplayed, onClose, humanId}) {
   if (!isDisplayed) return null;
 
   const [modalMode, setModalMode] = useState("basicData")
   const [modalData, setModalData] = useState({
-    superpowers: []
+    superpowers: [],
+    interactionPlacesCategories: []
   })
+  const [quotes, setQuotes] = useState([])
+  const [placesData, setPlacesData] = useState([])
 
   let mappedSuperpowers = null
   if (modalData.superpowers.length > 0) {
-    mappedSuperpowers = modalData.superpowers.map((superpower) => <SuperpowerIcon img={superpower.photo} title={superpower.name}/>)
+    mappedSuperpowers = modalData.superpowers.map((superpower) => <SuperpowerIcon src={superpower.photo} title={superpower.name}/>)
   }
+
+  let mappedPlaceCategories = null
+  if (modalData.interactionPlacesCategories.length > 0) {
+    mappedPlaceCategories = modalData.interactionPlacesCategories.map((row) => <StyledTableRow><StyledTableCell>{row.category}</StyledTableCell><StyledTableCell>{row.category_count}</StyledTableCell></StyledTableRow>)
+  }
+
+
+  
+  let mappedPlaces = placesData.map((place) => 
+  <Marker position={[place.lat, place.lng]} key={place.place_name} icon={getIconSafe(place.category)}>
+    <Popup>
+    <b>{place.place_name}</b><br/>
+    {place.category}
+    </Popup>
+    </Marker>)
+  
+let mappedQuotes = quotes.map((quote) => (
+  <StyledQuoteInQuotesList
+    dangerouslySetInnerHTML={{
+      __html: `"${sanitizeHtml(quote.quote)}"`,
+    }}
+  />
+))
 
   useEffect(()=> {
     const getBasicHumanInfo = async () => {
@@ -89,6 +195,44 @@ export default function HumanModal({ isDisplayed, onClose, humanId}) {
 
   },[modalMode, humanId])
 
+  useEffect(() => {
+    if (modalMode !== "quotesData") return
+
+    const getHumanQuotes = async () => {
+      const fetchResult = await fetch(
+        `http://localhost:3000/get-human-quotes?humanId=${humanId}`
+      )
+      const quotesJson = await fetchResult.json()
+      setQuotes(quotesJson)
+    }
+
+    getHumanQuotes()
+  }, [modalMode, humanId])
+
+  useEffect(() => {
+  if (modalMode !== "interactionsMap") return
+
+  const getPlacesData = async () => {
+    const fetchResult = await fetch(
+      `http://localhost:3000/human-places?humanId=${humanId}`
+    )
+    const placesJson = await fetchResult.json()
+    setPlacesData(placesJson)
+  }
+
+  getPlacesData()
+}, [modalMode, humanId])
+
+
+
+function InvalidateMapSize() {
+  const map = useMap();
+  useEffect(() => {
+    if (!map) return;
+    map.invalidateSize();
+  }, [map]);
+  return null;
+}
 
   function renderContent() {
         switch (modalMode) {
@@ -105,22 +249,66 @@ export default function HumanModal({ isDisplayed, onClose, humanId}) {
                 Liczba spotkań: {modalData.meetingsCount} <br/>
                 Liczba cytatów: {modalData.quotesCount} <br/>
                 {modalData.lastSeen}
+                <h2>Gdzie się widujecie poza tripami?</h2>
+                <StyledTable>
+                  <tr>
+                    <StyledTableHeader>Kategoria miejsca</StyledTableHeader>
+                    <StyledTableHeader>Liczba spotkań</StyledTableHeader>
+                  </tr>
+                  {mappedPlaceCategories}
+
+                </StyledTable>
 
               </StyledTextContainer>
             
             )
             case "visitsData":
-            return (<h1>Wizyty</h1>)
+            return (
+              <h1>Wizyty</h1>
+            )
             case "meetingsData":
             return (<h1>Spotkania</h1>)
             case "eventsData":
             return (<h1>Wydarzenia</h1>)
             case "quotesData":
-            return (<h1>Cytaty</h1>)
+              return (
+                <StyledTextContainer>
+                  <h1>Cytaty</h1> 
+                  {mappedQuotes}
+                </StyledTextContainer>
+
+              )
             case "relatiogram":
             return (<h1>Relacjogram</h1>)
             case "interactionsMap":
-            return (<h1>Mapa interakcji</h1>)
+            return (
+            <StyledTextContainer>
+              <h2>Mapa interakcji</h2>
+              <MapContainer
+                center={[52.23, 21.01]}
+                zoom={13}
+                scrollWheelZoom={true}
+                style={{
+                  width: "80%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  border: "1px solid black",
+                  marginTop: "30px",
+                  aspectRatio: 2 / 1,
+                  marginBottom: "20px"
+                }}
+              >
+                <InvalidateMapSize />
+
+                <TileLayer
+                  attribution='&copy; OpenStreetMap contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {mappedPlaces}
+                <FitMapToMarkers places={placesData} />
+              </MapContainer>
+            </StyledTextContainer>
+          )
         }
     }
 
