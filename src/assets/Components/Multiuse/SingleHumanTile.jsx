@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DOMPurify from "dompurify";
 
 const HumanTile = styled.div`
         width: 26%;
@@ -11,6 +12,10 @@ const HumanTile = styled.div`
     &>img {
         width: 80%;
         border: 1px solid black;
+        margin: calc(10% - 1px);
+        margin-top: 0px;
+        border-radius: 35px;
+        margin-bottom: 0px;
     }
     &>.fullName {
         margin-left: 10%;
@@ -38,6 +43,7 @@ const HumanTile = styled.div`
         margin-bottom: 10px;
         width: 20%;
         aspect-ratio: 1/1;
+        border-radius: 8.5%;
         border: 1px solid black;
     }
     &:hover {
@@ -46,15 +52,17 @@ const HumanTile = styled.div`
 ` 
 
 
-export default function SingleHumanTile({photoDir, name, visits, meetings, cliquePhoto,cliqueName, quote}) {
+export default function SingleHumanTile({headerText, photoDir, name, visits, meetings, cliquePhotoAdress, cliqueName, quote, onClick}) {
     return (
-        <HumanTile>
+        <HumanTile onClick={onClick}>
+            <h2></h2>
             <img src={photoDir} alt={name} />
             <div className="fullName">{name}</div>
             <div className="interactionsCounter">Liczba wizyt: {visits}</div>
             <div className="interactionsCounter">Liczba spotkań: {meetings}</div>
-            <img className="clique_photo" src={cliquePhoto} alt={cliqueName} />
-            <div className="golden_quote">{quote}</div>
+            <img className="clique_photo" src={cliquePhotoAdress} alt={cliqueName} />
+            <div className="golden_quote" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(quote) }}
+            ></div>
         </HumanTile>
     )
 }
