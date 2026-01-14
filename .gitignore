@@ -21,6 +21,7 @@ src/assets/backend/cliques_photos/
 src/assets/backend/functionalPhotos/
 /src/assets/backend/.env
 /src/assets/backend/.env_clean
+/src/assets/backend/map_icons/
 
 
 
@@ -38,3 +39,4 @@ src/assets/backend/functionalPhotos/
 *.njsproj
 *.sln
 *.sw?
+src/assets/Components/Multiuse/PlacesCategoriesDict.js
