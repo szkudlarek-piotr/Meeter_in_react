@@ -34,3 +34,8 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+.unicorn-icon {
+  filter: drop-shadow(0 0 0 black)
+          drop-shadow(0 0 2px black)
+          drop-shadow(0 0 4px black);
+}
