@@ -12,6 +12,13 @@ import addMeeting from './addMeeting.js'
 import addHumansToMeeting from './addHumansTOMeeting.js'
 import addVisitingHuman from './addVisitingHuman.js'
 import addVisit from './addVisit.js'
+import addCalendarEvent from './addEvent2.js'
+import addEventCompanions from './addEventCompanions.js'
+import addQuote from './addQuote.js'
+import addPlace from './addPLace.js'
+import getBasicInfoForModal from './getBasicInfoForHumanModal.js'
+import getHumanQuotes from './getHUmanQuotes.js'
+import getHumanPlaces from './getHumanPlaces.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,6 +32,8 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/human-photo", express.static(path.join(__dirname, "photos")));
 app.use("/event-photo", express.static(path.join(__dirname, "events")));
+app.use("/superpowers", express.static(path.join(__dirname, "superpower_icons")));
+app.use("/map-icons", express.static(path.join(__dirname, "map_icons")));
 
 function getHumanPhotoUrl(humanId) {
   const photosDir = path.join(__dirname, "photos");
@@ -130,6 +139,38 @@ app.get("/get-places-from-substring", async(req, res) => {
   res.send(returnedPlaces)
 })
 
+app.get("/basic-human-info",async(req, res) => {
+  const humanId = req.query.humanId
+  try {
+    const basicHumanData = await getBasicInfoForModal(humanId)
+    res.send(basicHumanData)
+  }
+  catch (error) {
+    console.log(error)
+  }
+}) 
+
+app.get("/get-human-quotes", async(req, res) => {
+  const humanId = req.query.humanId
+  try {
+    const quotesData = await getHumanQuotes(humanId)
+    res.send(quotesData)
+  }
+  catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/human-places", async(req, res) => {
+  const humanId = req.query.humanId
+  try {
+    const placesData = await getHumanPlaces(humanId)
+    res.send(placesData)
+  }
+  catch (error) {
+    console.log(error)
+  }
+})
 
 app.post("/add-meeting", async(req, res) => {
   const date = req.query.date
@@ -180,6 +221,69 @@ app.post("/add-visiting-humans", async(req, res) => {
     res.send(result)
   }
   catch(error) {
+    res.send(error)
+  }
+})
+
+app.post("/add-event", async(req, res) => {
+  console.log("Będę doawał event.")
+  const eventName = req.body.name
+  const startDate = req.body.startDate
+  const stopDate = req.body.stopDate
+  const comingDate = req.body.comingDate
+  const leavingDate = req.body.leavingDate
+  const longDesc = req.body.longDesc
+  const placeName = req.body.placeName
+  const photoAddingInfo = req.body.photoAddingInfo
+  const placeId = req.body.placeId
+
+  try {
+    const result = await addCalendarEvent(eventName, startDate, stopDate, comingDate, leavingDate, placeName, longDesc, photoAddingInfo, placeId)
+    console.log(result)
+    res.send(result)
+  }
+  catch (error) {
+    console.log(error)
+    res.send(error)
+  }
+})
+
+app.post("/add-event-companion", async(req, res) => {
+  const eventId = req.body.eventId
+  const humansArr = req.body.humansArr
+  try {
+    const result = await addEventCompanions(eventId, humansArr)
+    res.send(result)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
+
+app.post("/add-quote", async(req, res) => {
+  const humanId = req.body.humanId
+  const quote = req.body.quote
+  const isPublic = req.body.isPublic
+  try {
+    const result = await addQuote(humanId, quote, isPublic)
+    res.send(result)
+  }
+  catch (error) {
+    console.log(error)
+    res.send(error)
+  }
+})
+
+app.post("/add-place", async(req, res) => {
+  const name = req.body.name
+  const category = req.body.category
+  const lat = req.body.lat
+  const lon = req.body.lon
+  try {
+    const result = await addPlace(name, category, lat, lon)
+    res.send(result)
+  }
+  catch (error) {
     res.send(error)
   }
 })
