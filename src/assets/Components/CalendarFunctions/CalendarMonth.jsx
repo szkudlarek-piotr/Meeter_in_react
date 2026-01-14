@@ -29,9 +29,9 @@ export default function CalendarMonth({month, year}) {
             ghostDaysBefore.push(<GhostDay />)
         }
     } 
-    for (let i=0; i<daysInMonth; i++) {
+    for (let i=1; i<=daysInMonth; i++) {
         const dayString = `${i} ${polishMonthsNames[month].substring(0,3)}`
-        allRealDays.push(<CalendarDay >${dayString}</CalendarDay>)
+        allRealDays.push(<CalendarDay >{dayString}</CalendarDay>)
     }
     return (
         <div style={{justifyContent: "space-evenly"}}>

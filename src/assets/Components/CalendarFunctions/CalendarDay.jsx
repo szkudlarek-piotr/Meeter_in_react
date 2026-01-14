@@ -7,7 +7,7 @@ const DayStyle = styled.div`
     justify-content: center;
     margin-left: 1%;
     margin-right: 1%;
-    width: 11%;
+    width: calc(11% - 2px);
     aspect-ratio: 1/1;
     border: 2px solid black;
     margin-bottom: 10px;
