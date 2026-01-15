@@ -21,7 +21,7 @@ const pool = mysql.createPool({
 function getHumanPhotoUrl(humanId) {
     const photosDir = path.join(__dirname, "photos");
     const photoPath = path.join(photosDir, `${humanId}.jpg`);
-    const defaultPhoto = "/photos/anonymous.jpg";
+    const defaultPhoto = "/human-photo/anonymous.jpg";
         
     if (fs.existsSync(photoPath)) {
         return `/human-photo/${humanId}.jpg`;
