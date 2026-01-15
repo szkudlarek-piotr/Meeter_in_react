@@ -19,6 +19,9 @@ import addPlace from './addPLace.js'
 import getBasicInfoForModal from './getBasicInfoForHumanModal.js'
 import getHumanQuotes from './getHUmanQuotes.js'
 import getHumanPlaces from './getHumanPlaces.js'
+import getHumanVisits from './getHumanVisits.js'
+import getHumanMeetings from './getHumanMeetings.js'
+import getHumanEvents from './getHumanEvents.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -166,6 +169,42 @@ app.get("/human-places", async(req, res) => {
   try {
     const placesData = await getHumanPlaces(humanId)
     res.send(placesData)
+  }
+  catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/human-visits", async(req, res) => {
+  const humanId = req.query.humanId
+  const years = req.query.years
+  try {
+    const visitsData = await getHumanVisits(humanId, years)
+    res.send(visitsData)
+  }
+  catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/human-meetings", async(req, res) => {
+  const humanId = req.query.humanId
+  const years = req.query.years
+  try {
+    const meetingsData = await getHumanMeetings(humanId, years)
+    res.send(meetingsData)
+  }
+  catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/human-events", async(req, res) => {
+  const humanId = req.query.humanId
+  const years = req.query.years
+  try {
+    const eventsData = await getHumanEvents(humanId, years)
+    res.send(eventsData)
   }
   catch (error) {
     console.log(error)
