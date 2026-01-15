@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import InterationComponent from "./InteractionsComponent.jsx";
 import { placesCategoriesDict } from './PlacesCategoriesDict.js'
 const Backdrop = styled.div`
   position: fixed;
@@ -153,6 +154,9 @@ export default function HumanModal({ isDisplayed, onClose, humanId}) {
   })
   const [quotes, setQuotes] = useState([])
   const [placesData, setPlacesData] = useState([])
+  const [visitsData, setVisitsData] = useState([])
+  const [meetingsData, setMeetingsData] = useState([])
+  const [eventsData, setEventsData] = useState([])
 
   let mappedSuperpowers = null
   if (modalData.superpowers.length > 0) {
@@ -179,6 +183,35 @@ let mappedQuotes = quotes.map((quote) => (
     dangerouslySetInnerHTML={{
       __html: `"${sanitizeHtml(quote.quote)}"`,
     }}
+  />
+))
+
+let mappedVisits = visitsData.map((visit) => (
+  <InterationComponent
+    key={visit.id}
+    shortDesc={visit.shortDesc}
+    date={visit.date}
+    longDesc={visit.longDesc}
+  />
+))
+
+let mappedMeetings = meetingsData.map((meeting) => (
+  <InterationComponent
+    key={meeting.id}
+    shortDesc={meeting.title}
+    date={meeting.date}
+    longDesc={meeting.longDesc}
+  />
+))
+
+
+let mappedEvents = eventsData.map((singleEvent) => (
+  <InterationComponent
+    key={singleEvent.id}
+    shortDesc={singleEvent.name}
+    date={singleEvent.date}
+    place={singleEvent.place}
+    longDesc={singleEvent.longDesc}
   />
 ))
 
@@ -212,7 +245,7 @@ let mappedQuotes = quotes.map((quote) => (
   useEffect(() => {
   if (modalMode !== "interactionsMap") return
 
-  const getPlacesData = async () => {
+  const getVisitsData = async () => {
     const fetchResult = await fetch(
       `http://localhost:3000/human-places?humanId=${humanId}`
     )
@@ -220,8 +253,58 @@ let mappedQuotes = quotes.map((quote) => (
     setPlacesData(placesJson)
   }
 
-  getPlacesData()
+  getVisitsData()
 }, [modalMode, humanId])
+
+
+  useEffect(() => {
+  if (modalMode !== "visitsData") return
+
+  const getVisitsData = async () => {
+    const fetchResult = await fetch(
+      `http://localhost:3000/human-visits?humanId=${humanId}&years=5`
+    )
+    const visitsJson = await fetchResult.json()
+    console.log(visitsJson)
+    setVisitsData(visitsJson)
+  }
+
+  getVisitsData()
+}, [modalMode, humanId])
+
+
+
+
+  useEffect(() => {
+  if (modalMode !== "meetingsData") return
+
+  const getVisitsData = async () => {
+    const fetchResult = await fetch(
+      `http://localhost:3000/human-meetings?humanId=${humanId}&years=5`
+    )
+    const meetingsJson = await fetchResult.json()
+    setMeetingsData(meetingsJson)
+  }
+
+  getVisitsData()
+}, [modalMode, humanId])
+
+
+
+  useEffect(() => {
+  if (modalMode !== "eventsData") return
+
+  const getEventsData = async () => {
+    const fetchResult = await fetch(
+      `http://localhost:3000/human-events?humanId=${humanId}&years=5`
+    )
+    const eventsJson = await fetchResult.json()
+    setEventsData(eventsJson)
+  }
+
+  getEventsData()
+}, [modalMode, humanId])
+
 
 
 
@@ -264,12 +347,26 @@ function InvalidateMapSize() {
             )
             case "visitsData":
             return (
+            <StyledTextContainer>
               <h1>Wizyty</h1>
+              {mappedVisits}
+            </StyledTextContainer>
+
             )
             case "meetingsData":
-            return (<h1>Spotkania</h1>)
+            return (
+              <StyledTextContainer>
+                <h1>Spotkania</h1>
+                {mappedMeetings}
+              </StyledTextContainer>)
             case "eventsData":
-            return (<h1>Wydarzenia</h1>)
+            return (
+            
+              <StyledTextContainer>
+                <h1>Wydarzenia</h1>
+                {mappedEvents}
+              </StyledTextContainer>
+            )
             case "quotesData":
               return (
                 <StyledTextContainer>
@@ -304,7 +401,7 @@ function InvalidateMapSize() {
                   attribution='&copy; OpenStreetMap contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {mappedPlaces}
+                {placesData.length > 0 ? mappedPlaces : <p>Brak miejsc do wyświetlenia</p>}
                 <FitMapToMarkers places={placesData} />
               </MapContainer>
             </StyledTextContainer>
