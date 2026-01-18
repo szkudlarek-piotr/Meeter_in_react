@@ -14,7 +14,7 @@ export default async function getHumanFromSubstring(deliveredSubstring){
     
     for (let human of possiblePeopleArr) {
         const humanPhotoDir = (fs.existsSync(path.join("photos", `${human.id}.jpg`)) ? `http://localhost:3000/human-photo/${human.id}.jpg`: `http://localhost:3000/human-photo/anonymous.jpg`);
-        let newHumanToAdd = {"id": human.id, "name": human.full_name, "photo": humanPhotoDir}
+        let newHumanToAdd = {"id": human.id, "name": human.full_name, "photoDir": humanPhotoDir}
         returnedArr.push(newHumanToAdd)
     }
     return returnedArr

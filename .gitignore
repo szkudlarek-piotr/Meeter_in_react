@@ -11,17 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-src/assets/backend/node_modules/
-src/assets/backend/videos/
-src/assets/backend/photos/
-src/assets/backend/trips/
-src/assets/backend/superpower_icons/
-src/assets/backend/events/
-src/assets/backend/cliques_photos/
-src/assets/backend/functionalPhotos/
-/src/assets/backend/.env
-/src/assets/backend/.env_clean
-/src/assets/backend/map_icons/
+
 
 
 
@@ -40,3 +30,11 @@ src/assets/backend/functionalPhotos/
 *.sln
 *.sw?
 src/assets/Components/Multiuse/PlacesCategoriesDict.js
+backend/photos/
+backend/superpower_icons/
+backend/trips/
+backend/videos/
+backend/cliques_photos/
+backend/events/
+backend/map_icons/
+backend/functionalPhotos/

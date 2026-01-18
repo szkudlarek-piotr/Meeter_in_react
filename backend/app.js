@@ -22,6 +22,7 @@ import getHumanPlaces from './getHumanPlaces.js'
 import getHumanVisits from './getHumanVisits.js'
 import getHumanMeetings from './getHumanMeetings.js'
 import getHumanEvents from './getHumanEvents.js'
+import addWedding from './addWedding.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -323,6 +324,31 @@ app.post("/add-place", async(req, res) => {
     res.send(result)
   }
   catch (error) {
+    res.send(error)
+  }
+})
+
+app.post("/add-wedding", async(req, res) => {
+  const date = req.body.date
+  const groomId = req.body.groomId
+  const brideId = req.body.brideId 
+  const shortDesc = req.body.shortDesc
+  const partnerId = req.body.partnerId
+  const ceremonyPlaceId = req.body.ceremonyPlaceId
+  const partyPlaceId = req.body.partyPlaceId
+  const hotelId = req.body.hotelId
+  const hasAfterpaty = req.body.afterpaty
+  const longDescription = req.body.longDescription
+  const wasIInvited = req.body.wasIInvited
+  console.log(`przekazywana wartość hasAfterparty to ${hasAfterpaty}`)
+
+  try {
+    const addWeddingReq = await addWedding(date, groomId, brideId, shortDesc, partnerId, ceremonyPlaceId, partyPlaceId, hotelId, hasAfterpaty, longDescription, wasIInvited)
+    console.log(addWeddingReq)
+    res.send(addWeddingReq)
+  }
+  catch (error) {
+    console.log(error)
     res.send(error)
   }
 })
