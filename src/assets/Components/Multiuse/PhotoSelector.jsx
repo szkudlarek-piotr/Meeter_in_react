@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ControlledTextInput from "./ControlledTextInput";
+import ControlledTextInput from "./SimpleControlledComponents/ControlledTextInput";
 import PhotoSelectorTile from "./PhotoSelectorTile";
 
 

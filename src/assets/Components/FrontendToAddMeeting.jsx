@@ -1,8 +1,8 @@
 
-import DatePickerWithClock from "./Multiuse/DatePickerWithClock.jsx";
-import ControlledTextInput from "./Multiuse/ControlledTextInput.jsx";
-import DropdownMenuForPlace from "./Multiuse/DropdownMenuForPlace2.jsx";
-import ControlledTextArea from "./Multiuse/ControlledTextArea.jsx";
+import DatePickerWithClock from "./Multiuse/SimpleControlledComponents/DatePickerWithClock.jsx";
+import ControlledTextInput from "./Multiuse/SimpleControlledComponents/ControlledTextInput.jsx";
+import DropdownMenuForPlace from "./Multiuse/DropdownComponents/DropdownMenuForPlace2.jsx";
+import ControlledTextArea from "./Multiuse/SimpleControlledComponents/ControlledTextArea.jsx";
 import HumansTileSeletor from "./Multiuse/HumansTileSelector.jsx"
 import { useEffect, useState } from "react";
 import dayjs from "dayjs"

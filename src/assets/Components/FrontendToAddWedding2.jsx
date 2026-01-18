@@ -1,9 +1,9 @@
-import DropdownMenuForHuman from './Multiuse/DropdownMenuForHuman.jsx';
-import DropdownMenuForPlace from "./Multiuse/DropdownMenuForPlace2.jsx";
-import ControlledTextInput from './Multiuse/ControlledTextInput.jsx';
-import DatePickerWithClock from "./Multiuse/DatePickerWithClock.jsx";
+import DropdownMenuForHuman from './Multiuse/DropdownComponents/DropdownMenuForHuman.jsx';
+import DropdownMenuForPlace from "./Multiuse/DropdownComponents/DropdownMenuForPlace2.jsx";
+import ControlledTextInput from './Multiuse/SimpleControlledComponents/ControlledTextInput.jsx';
+import DatePickerWithClock from "./Multiuse/SimpleControlledComponents/DatePickerWithClock.jsx";
 import RadioOptionsPicker from "./Multiuse/RadioOptionsPicker.jsx";
-import ControlledTextArea from "./Multiuse/ControlledTextArea.jsx";
+import ControlledTextArea from "./Multiuse/SimpleControlledComponents/ControlledTextArea.jsx";
 import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
 import CaptionedPhoto from "./Multiuse/CaptionedPhoto.jsx";
 import { useEffect, useState } from "react";

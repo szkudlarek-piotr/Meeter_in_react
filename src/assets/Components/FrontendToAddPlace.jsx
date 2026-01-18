@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import ControlledTextInput from "./Multiuse/ControlledTextInput";
-import ControledTextInputWithHeader from "./Multiuse/ControlledTextInputWithHeader.jsx"
+import ControlledTextInput from "./Multiuse/SimpleControlledComponents/ControlledTextInput.jsx";
+import ControledTextInputWithHeader from "./Multiuse/SimpleControlledComponents/ControlledTextInputWithHeader.jsx"
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";

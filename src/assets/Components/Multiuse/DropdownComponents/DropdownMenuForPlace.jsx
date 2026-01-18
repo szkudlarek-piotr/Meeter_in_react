@@ -1,18 +1,15 @@
 import styled from "styled-components";
 import DropdownOptionForPlace from './DropdownOptionForPlace.jsx'
-import ControlledTextInput from "./ControlledTextInput.jsx";
+import SimpleTextInput from "../../SimpleTextInput.jsx";
 
 const StyledDropdown = styled.div`
-    width:100%;
+    width:80%;
+    margin-left: 10%;
+    margin-right: 10%;
     margin-bottom: 20px;
-    
     >.containerForOptions {
         max-height: 240px;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
         overflow-y: auto;
-        border-bottom: 1px solid black;
     }
 `
 
@@ -28,7 +25,20 @@ export default function DropdownMenuForPlace({inputValue, onInputChange, choiceO
     )
     return (
         <StyledDropdown>
-        <ControlledTextInput fieldValue={inputValue} changeFieldValue={onInputChange} placeholderValue={placeholder}/>
+        <input
+            type="text"
+            placeholder={placeholder}
+            value={inputValue}
+            onChange={(e) => onInputChange(e.target.value)}
+            style={{
+                width: "100%",
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #030303ff",
+                fontSize: "1rem",
+                marginBottom: "6px"
+            }}
+        />
         <div className="containerForOptions">
             {choicesOptions}
         </div>

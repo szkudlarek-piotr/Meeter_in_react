@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from 'styled-components'
-import DropdownMenuForHuman from "./Multiuse/DropdownMenuForHuman";
-import ControlledTextArea from "./Multiuse/ControlledTextArea";
+import DropdownMenuForHuman from "./Multiuse/DropdownComponents/DropdownMenuForHuman";
+import ControlledTextArea from "./Multiuse/SimpleControlledComponents/ControlledTextArea";
 import RadioOptionsPicker from "./Multiuse/RadioOptionsPicker";
 
 

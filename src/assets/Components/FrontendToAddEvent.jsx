@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import ControlledTextInput from "./Multiuse/ControlledTextInput";
+import ControlledTextInput from "./Multiuse/SimpleControlledComponents/ControlledTextInput.jsx";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
-import DatePickerWithClock from "./Multiuse/DatePickerWithClock";
-import ControlledTextArea from "./Multiuse/ControlledTextArea";
+import DatePickerWithClock from "./Multiuse/SimpleControlledComponents/DatePickerWithClock.jsx";
+import ControlledTextArea from "./Multiuse/SimpleControlledComponents/ControlledTextArea.jsx";
 import HumansTileSelector from "./Multiuse/HumansTileSelector";
-import DropdownMenuForPlace from "./Multiuse/DropdownMenuForPlace2.jsx";
+import DropdownMenuForPlace from "./Multiuse/DropdownComponents/DropdownMenuForPlace2.jsx";
 import RadioOptionsPicker from "./Multiuse/RadioOptionsPicker.jsx";
 import PhotoSelector from "./Multiuse/PhotoSelector.jsx";
 import { Pool } from "@mui/icons-material";

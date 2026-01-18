@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SimpleTextInput from "../SimpleTextInput.jsx";
+import SimpleTextInput from "../../SimpleTextInput.jsx";
 
 const StyledDropdown = styled.div`
     width:80%;
