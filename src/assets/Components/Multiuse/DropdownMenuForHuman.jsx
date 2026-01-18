@@ -12,7 +12,7 @@ const StyledDropdown = styled.div`
 export default function DropdownMenuForHuman({inputValue, onInputChange, choiceOptions, placeholder, onOptionDoubleClick}) {
     const choicesOptions = choiceOptions.map((option) => 
         <DropdownOptionForHuman
-            photo={"http://localhost:3000" + option.photoDir}
+            photo={option.photoDir}
             name={option.name}
             id={option.id}
             key={option.id}
