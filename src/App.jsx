@@ -10,7 +10,7 @@ import FrontendToAddVisit from './assets/Components/FrontendToAddVisit.jsx'
 import FrontendToAddMeeting from './assets/Components/FrontendToAddMeeting.jsx'
 import FrontendToAddEvent from './assets/Components/FrontendToAddEvent.jsx'
 import FrontendToAddQuote from './assets/Components/FrontendToAddQuote.jsx'
-//import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
+import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
 import { useState } from 'react'
 
 import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
@@ -58,8 +58,7 @@ function App() {
       mainContent = <FrontendToAddQuote/>
       break;
     case "addWedding":
-      mainContent = "Tu będzie dodawanie wesel."
-      //mainContent = <FrontendToAddWedding />
+      mainContent = <FrontendToAddWedding />
       break;
     case "addDancingVideo":
       mainContent = "Tu będzie dodawanie filmikó tanecznych.";
