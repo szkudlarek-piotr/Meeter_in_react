@@ -39,3 +39,25 @@ button {
           drop-shadow(0 0 2px black)
           drop-shadow(0 0 4px black);
 }
+footer {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 200px;
+  font-size: 20px;
+}
+footer>p>a {
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+}
+footer>p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-decoration: none;
+  color: white;
+}
