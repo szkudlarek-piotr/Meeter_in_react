@@ -38,3 +38,4 @@ backend/cliques_photos/
 backend/events/
 backend/map_icons/
 backend/functionalPhotos/
+backend/.env
