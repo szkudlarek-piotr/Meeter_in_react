@@ -367,6 +367,14 @@ function InvalidateMapSize() {
                 {mappedEvents}
               </StyledTextContainer>
             )
+            case "tripsData":
+            return (
+            
+              <StyledTextContainer>
+                <h1>Podróże</h1>
+                {}
+              </StyledTextContainer>
+            )
             case "quotesData":
               return (
                 <StyledTextContainer>
@@ -418,6 +426,7 @@ function InvalidateMapSize() {
             <ChoiceOption key="humanModalVisits" onClick={() => setModalMode("visitsData")}>Wizyty</ChoiceOption>
             <ChoiceOption key="humanModalMeetings" onClick={() => setModalMode("meetingsData")}>Spotkania</ChoiceOption>
             <ChoiceOption key="humanModalEvents" onClick={() => setModalMode("eventsData")}>Wydarzenia</ChoiceOption>
+            <ChoiceOption key="humanModalTrips" onClick={() => setModalMode("tripsData")}>Podróże</ChoiceOption>
             <ChoiceOption key="humanModalQuotes" onClick={() => setModalMode("quotesData")}>Cytaty</ChoiceOption>
             <ChoiceOption key="relatiogram" onClick={() => setModalMode("relatiogram")}>Relacjogram</ChoiceOption>
             <ChoiceOption key="interactionsMap" onClick={() => setModalMode("interactionsMap")}>Mapa interakcji</ChoiceOption>
