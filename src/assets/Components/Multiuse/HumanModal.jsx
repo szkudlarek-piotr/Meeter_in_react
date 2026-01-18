@@ -105,6 +105,7 @@ const StyledTableCell = styled.td`
 const StyledQuoteInQuotesList = styled.blockquote`
   margin: 22px 12%;
   padding: 6px 0;
+  width: 90%
 
   font-family: "Cormorant Garamond", serif;
   font-size: 26px;
