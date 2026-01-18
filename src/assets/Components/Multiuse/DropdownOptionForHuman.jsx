@@ -32,7 +32,7 @@ const HumanDropdownOption= styled.div`
 
 export default function DropdownOptionForHuman({photo, name, id, onDoubleClick}) {
     return (
-        <HumanDropdownOption onDoubleClick={() => onDoubleClick(id, name)} key={id}> 
+        <HumanDropdownOption onDoubleClick={() => photo.length > 1 ? onDoubleClick(photo, name, id) : onDoubleClick(id, name)} key={id}> 
             <img src={photo} alt={name}/>
             <div className="humanName">{name}</div>
         </HumanDropdownOption>)
