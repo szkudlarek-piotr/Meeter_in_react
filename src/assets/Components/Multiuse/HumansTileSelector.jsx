@@ -25,7 +25,7 @@ export default function HumansTileSelector({headerText, selectedHumansHeaderText
     return (
         <>
             <h2>{headerText}</h2>
-            <ControlledTextInput fieldValue={selectorInputValue} changeFieldValue={onInputValueChange} id="selectorInput" placeholderValue="Wpisz dane szukanej osoby..." key="HUmanSelectorInput"/>
+            <ControlledTextInput fieldValue={selectorInputValue} changeFieldValue={onInputValueChange} id="selectorInput" placeholderValue="Wpisz dane szukanej osoby..." key="HumanSelectorInput"/>
             <HumansTileContainer>
                 {mappedSuggestedHumans}
             </HumansTileContainer>
