@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import InterationComponent from "./InteractionsComponent.jsx";
 import { placesCategoriesDict } from './PlacesCategoriesDict.js'
+import InteractionsMap from "./HumanModalSubcomponents/InteractionsMap.jsx";
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -79,6 +80,7 @@ const StyledTextContainer = styled.div`
   flex-direction: column;
   align-items: center;      
 `
+
 const StyledTable = styled.table`
   border-collapse: collapse;
   border: 3px solid black;   /* gruba obwódka */
@@ -169,15 +171,6 @@ export default function HumanModal({ isDisplayed, onClose, humanId}) {
     mappedPlaceCategories = modalData.interactionPlacesCategories.map((row) => <StyledTableRow><StyledTableCell>{row.category}</StyledTableCell><StyledTableCell>{row.category_count}</StyledTableCell></StyledTableRow>)
   }
 
-
-  
-  let mappedPlaces = placesData.map((place) => 
-  <Marker position={[place.lat, place.lng]} key={place.place_name} icon={getIconSafe(place.category)}>
-    <Popup>
-    <b>{place.place_name}</b><br/>
-    {place.category}
-    </Popup>
-    </Marker>)
   
 let mappedQuotes = quotes.map((quote) => (
   <StyledQuoteInQuotesList
@@ -243,19 +236,6 @@ let mappedEvents = eventsData.map((singleEvent) => (
     getHumanQuotes()
   }, [modalMode, humanId])
 
-  useEffect(() => {
-  if (modalMode !== "interactionsMap") return
-
-  const getVisitsData = async () => {
-    const fetchResult = await fetch(
-      `http://localhost:3000/human-places?humanId=${humanId}`
-    )
-    const placesJson = await fetchResult.json()
-    setPlacesData(placesJson)
-  }
-
-  getVisitsData()
-}, [modalMode, humanId])
 
 
   useEffect(() => {
@@ -306,17 +286,6 @@ let mappedEvents = eventsData.map((singleEvent) => (
   getEventsData()
 }, [modalMode, humanId])
 
-
-
-
-function InvalidateMapSize() {
-  const map = useMap();
-  useEffect(() => {
-    if (!map) return;
-    map.invalidateSize();
-  }, [map]);
-  return null;
-}
 
   function renderContent() {
         switch (modalMode) {
@@ -386,35 +355,8 @@ function InvalidateMapSize() {
               )
             case "relatiogram":
             return (<h1>Relacjogram</h1>)
-            case "interactionsMap":
-            return (
-            <StyledTextContainer>
-              <h2>Mapa interakcji</h2>
-              <MapContainer
-                center={[52.23, 21.01]}
-                zoom={13}
-                scrollWheelZoom={true}
-                style={{
-                  width: "80%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  border: "1px solid black",
-                  marginTop: "30px",
-                  aspectRatio: 2 / 1,
-                  marginBottom: "20px"
-                }}
-              >
-                <InvalidateMapSize />
-
-                <TileLayer
-                  attribution='&copy; OpenStreetMap contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {placesData.length > 0 ? mappedPlaces : <p>Brak miejsc do wyświetlenia</p>}
-                <FitMapToMarkers places={placesData} />
-              </MapContainer>
-            </StyledTextContainer>
-          )
+            case "interactionsMap2":
+              return <InteractionsMap humanId={humanId}/>
         }
     }
 
@@ -430,7 +372,7 @@ function InvalidateMapSize() {
             <ChoiceOption key="humanModalTrips" onClick={() => setModalMode("tripsData")}>Podróże</ChoiceOption>
             <ChoiceOption key="humanModalQuotes" onClick={() => setModalMode("quotesData")}>Cytaty</ChoiceOption>
             <ChoiceOption key="relatiogram" onClick={() => setModalMode("relatiogram")}>Relacjogram</ChoiceOption>
-            <ChoiceOption key="interactionsMap" onClick={() => setModalMode("interactionsMap")}>Mapa interakcji</ChoiceOption>
+            <ChoiceOption key="interactionsMap2" onClick={() => setModalMode("interactionsMap2")}>Mapa interakcji</ChoiceOption>
         </MenuBox>
         <ContentBox>
             {renderContent()}
