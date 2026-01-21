@@ -39,7 +39,7 @@ export default function FrontendToAddQuote() {
         }))
     }
 
-    function setChosenQuoteAuthor(humanId, humanName) {
+    function setChosenQuoteAuthor( photoAddress, humanName, humanId) {
         setAddQuoteState(prevState => ({
             ...prevState,
             "chosenAuthorId": humanId,
