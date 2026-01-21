@@ -11,6 +11,7 @@ import FrontendToAddMeeting from './assets/Components/FrontendToAddMeeting.jsx'
 import FrontendToAddEvent from './assets/Components/FrontendToAddEvent.jsx'
 import FrontendToAddQuote from './assets/Components/FrontendToAddQuote.jsx'
 import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
+import FrontendForGuessingQuoteAuthor from './assets/Components/FrontendForGuessingQuoteAuthor.jsx'
 import { useState } from 'react'
 
 import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
@@ -27,7 +28,7 @@ function App() {
       mainContent = <AllHumanTiles />
       break;
     case "calendar":
-      mainContent = <Calendar year="2025"/>
+      mainContent = <Calendar year="2026"/>
       break;
     case "allCliques":
       mainContent = "Tu będą kliki";
@@ -64,7 +65,7 @@ function App() {
       mainContent = "Tu będzie dodawanie filmikó tanecznych.";
       break;
     case "guessQuoteAuthors":
-      mainContent = "Tu będzie gra w zgadywanie autorow cytatów.";
+      mainContent = <FrontendForGuessingQuoteAuthor/>
       break;
   }
 
