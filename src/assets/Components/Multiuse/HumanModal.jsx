@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import ChoiceOption from "../ChoiceOption"
-import sanitizeHtml from 'sanitize-html'
+import sanitizeHtml from 'sanitize-html';
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -9,6 +9,7 @@ import L from "leaflet";
 import InterationComponent from "./InteractionsComponent.jsx";
 import { placesCategoriesDict } from './PlacesCategoriesDict.js'
 import InteractionsMap from "./HumanModalSubcomponents/InteractionsMap.jsx";
+import QuotesDataInModal from "./HumanModalSubcomponents/QuotesDataInModal.jsx";
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -354,9 +355,13 @@ let mappedEvents = eventsData.map((singleEvent) => (
 
               )
             case "relatiogram":
-            return (<h1>Relacjogram</h1>)
+              return (<h1>Relacjogram</h1>)
             case "interactionsMap2":
               return <InteractionsMap humanId={humanId}/>
+            case "quotes2":
+              return (
+              <QuotesDataInModal humanId={humanId} headerText="Cytaty"/>
+            )
         }
     }
 
