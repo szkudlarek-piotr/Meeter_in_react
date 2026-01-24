@@ -9,7 +9,7 @@ const pool = mysql.createPool({
 
 export default async function getHumanQuotes(humanId) {
     const quotesQuoeryText = `
-    SELECT quote
+    SELECT quote_id, quote
     FROM golden_quotes
     WHERE is_public = 1
     AND human_id = ?
