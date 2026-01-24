@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import styled from 'styled-components'
 import DropdownMenuForHuman from "./Multiuse/DropdownComponents/DropdownMenuForHuman";
 import ControlledTextArea from "./Multiuse/SimpleControlledComponents/ControlledTextArea";
-import RadioOptionsPicker from "./Multiuse/RadioOptionsPicker";
+import RadioOptionsPicker from "./Multiuse/RadioOptionsPicker.jsx";
+import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
 
 
 const StyledButton = styled.button`
@@ -18,6 +19,7 @@ const StyledButton = styled.button`
 `
 
 export default function FrontendToAddQuote() {
+    const DECAY_TIME = 5000
     function getInitialState() {
         return ({
             humanInputValue: "",
@@ -31,6 +33,7 @@ export default function FrontendToAddQuote() {
 
     const [addQuoteState, setAddQuoteState] = useState(getInitialState())
     const [isAdding, setIsAdding] = useState(false)
+    const [insertResult, setInsertResult] = useState({ message: "", status: null });
 
     function setSingleProperty(propertyName, changedValue) {
         setAddQuoteState(prevState => ({
@@ -84,7 +87,10 @@ export default function FrontendToAddQuote() {
                 }
             )
             const addQuoteJson = await addQuoteReq.json()
-            console.log(addQuoteJson)
+            if (addQuoteReq.ok) {
+                setAddQuoteState(getInitialState())
+                setInsertResult({message: "Pomyślnie dodano cytat!", status: "1"})
+            }
         }
         addQuoteFunction()
     }, [isAdding])
@@ -106,5 +112,10 @@ export default function FrontendToAddQuote() {
 
         /> <br/>
         <StyledButton type="button" onClick={() => {setIsAdding(true);}}>Dodaj cytat!</StyledButton>
+        {
+            insertResult.status && (
+                <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />
+            )
+        }
     </>)
 }
