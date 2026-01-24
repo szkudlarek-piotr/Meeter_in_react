@@ -378,6 +378,7 @@ let mappedEvents = eventsData.map((singleEvent) => (
             <ChoiceOption key="humanModalQuotes" onClick={() => setModalMode("quotesData")}>Cytaty</ChoiceOption>
             <ChoiceOption key="relatiogram" onClick={() => setModalMode("relatiogram")}>Relacjogram</ChoiceOption>
             <ChoiceOption key="interactionsMap2" onClick={() => setModalMode("interactionsMap2")}>Mapa interakcji</ChoiceOption>
+            <ChoiceOption key="quotes2" onClick={() => setModalMode("quotes2")}>Cytaty na nowo</ChoiceOption>
         </MenuBox>
         <ContentBox>
             {renderContent()}
