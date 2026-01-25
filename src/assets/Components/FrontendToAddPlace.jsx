@@ -5,15 +5,17 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "re
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import styled from "styled-components";
-
-// Fix Leaflet default icon issue in React
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
+
+const DECAY_TIME = 5000
 
 const StyledButton = styled.button`
     width: 30%;
     background-color: white;
     border: 2px solid black;
+    margin-bottom: 40px;
     font-weight: 900;
     font-size: 30px;
     &:hover {
@@ -69,6 +71,8 @@ export default function FrontendToAddPlace() {
 
   const [addPlaceState, setAddPlaceState] = useState(setInitialState())
   const [isAdding, setIsAdding] = useState(false)
+  const [insertResult, setInsertResult] = useState({ message: "", status: null })
+
 
   const defaultCenter = [52.228749899765276, 21.00281945835816]
 
@@ -110,6 +114,7 @@ export default function FrontendToAddPlace() {
     useEffect(() =>{
         if (isAdding == false ) return;
         const addPlaceFunction = async () => {
+          try {
             const addPlaceReq = await fetch(`http://localhost:3000/add-place`, 
                 {
                     method: "POST",
@@ -125,10 +130,15 @@ export default function FrontendToAddPlace() {
                 }
             )
             const addPlaceJson = await addPlaceReq.json()
-            console.log(addPlaceJson)
+            setInsertResult({status: "1", message: `Pomyślnie dodano ${addPlaceState.addedPlaceName} do bazy danych.`})
+          }
+          catch (error) {
+
+          }
+
         }
         addPlaceFunction()
-        //setAddPlaceState(setInitialState())
+        setAddPlaceState(setInitialState())
     }, [isAdding])
 
   const lat = parseFloat(addPlaceState.placeLat)
@@ -189,6 +199,10 @@ export default function FrontendToAddPlace() {
 
 
       <StyledButton onClick={() => setIsAdding(true)}>Dodaj miejsce</StyledButton>
+      {
+        insertResult.status && (
+          <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />)
+      }
     </div>
   );
 }

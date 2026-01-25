@@ -7,11 +7,15 @@ import HumansTileSeletor from "./Multiuse/HumansTileSelector.jsx"
 import { useEffect, useState } from "react";
 import dayjs from "dayjs"
 import styled from "styled-components";
+import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
+
+const DECAY_TIME = 5000
 
 const StyledButton = styled.button`
     width: 30%;
     background-color: white;
     border: 2px solid black;
+    margin-bottom: 40px;
     font-weight: 900;
     font-size: 30px;
     &:hover {
@@ -52,6 +56,7 @@ export default function FrontendToAddMeeting() {
     }
     const [addMeetingState, setAddMeetingState] = useState(getInitialState())
     const [isAdding, setIsAdding] = useState(false)
+    const [insertResult, setInsertResult] = useState({ message: "", status: null });
 
     function setSingleProperty(propertyName, propertyValue) {
     setAddMeetingState(prevState => ({
@@ -174,11 +179,11 @@ export default function FrontendToAddMeeting() {
                 const addHumansJson = await humansRes.json();
                 console.log(addHumansJson)
 
-                // 3️⃣ Reset formularza
                 setAddMeetingState(getInitialState());
+                setInsertResult({status: "1", message: "Pomyślnie dodano towarzystwo do spotkania!"})
 
             } catch (err) {
-                console.error("Błąd:", err);
+                setInsertResult({status: "-1", message: `Wystąpił błąd podczas dodawania ludzi do spotkania. Treść błędu: ${err}.`})
             } finally {
                 setIsAdding(false);
             }
@@ -224,6 +229,14 @@ export default function FrontendToAddMeeting() {
             tileRemoverFunction={removeTileFromChosen}
         /> 
         <StyledButton id="addMeetingButton" onClick={() => setIsAdding(true)}>Dodaj spotkanie</StyledButton>
+
+
+
+        {
+            insertResult.status && (
+                <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />
+            )
+        }
     </>
     )
 }
