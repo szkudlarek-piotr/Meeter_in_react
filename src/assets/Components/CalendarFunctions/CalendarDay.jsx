@@ -11,7 +11,7 @@ const DayStyle = styled.div`
     aspect-ratio: 1/1;
     border: 2px solid black;
     margin-bottom: 10px;
-    border-radius: 5%;
+    border-radius: 15px;
 `
 export default function CalendarDay({children}) {
     return <DayStyle>{children}</DayStyle>

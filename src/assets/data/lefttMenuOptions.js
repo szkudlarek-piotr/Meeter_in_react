@@ -13,6 +13,7 @@ export const leftMenuOptions = [
     {"id": "addQuote", "text": "Dodaj cytat", "state": "addQuote"},
     {"id": "addWedding", "text": "Dodaj wesele", "state": "addWedding"},
     {"id": "addDancingVideo", "text": "Dodaj filmik taneczny", "state": "addDancingVideo"},
-    {"id": "guessQuoteAuthors", "text": "Zgaduj autorów cytatów", "state": "guessQuoteAuthors"}
+    {"id": "guessQuoteAuthors", "text": "Zgaduj autorów cytatów", "state": "guessQuoteAuthors"},
+
 
 ]
