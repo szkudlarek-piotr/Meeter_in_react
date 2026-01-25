@@ -3,6 +3,7 @@ import ControlledTextInput from "./Multiuse/SimpleControlledComponents/Controlle
 import ControlledTextArea from "./Multiuse/SimpleControlledComponents/ControlledTextArea.jsx";
 import HumansTileSeletor from "./Multiuse/HumansTileSelector.jsx";
 import ControlledNumberInput from "./Multiuse/SimpleControlledComponents/ControlledNumberInput.jsx";
+import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs"
 import styled from "styled-components";
@@ -60,8 +61,13 @@ export default function FrontendToAddVisit() {
         [propertyName]: propertyValue
         }));
     }
+
+    const DECAY_TIME = 5000
     const [addVisitState, setAddVisitState] = useState(getInitialState())
     const [isAdding, setIsAdding] = useState(false)
+    const [insertResult, setInsertResult] = useState({ message: "", status: null })
+
+
 
     useEffect(() => {
         const excludedIds = addVisitState.chosenHumans.map((human) => (human.id)).join(',')
@@ -86,7 +92,6 @@ useEffect(() => {
             try {
                 const formattedDate = addVisitState.date.format("YYYY-MM-DD HH:mm:ss");
 
-                // 1️⃣ Dodanie spotkania
                 const visitRes = await fetch(
                     `http://localhost:3000/add-visit`,
                     {
@@ -121,6 +126,12 @@ useEffect(() => {
                         })
                     })
                 const addingResponse = await visitorsRes.json()
+                if (visitorsRes.ok) {
+                    setInsertResult({status: "1", message: "Pomyślnie dodano gości do wizyty."})
+                }
+                else {
+                    setInsertResult({status: "-1", mesaage: "Podczas dodawania gości do wizyty wystąpił bład."})
+                }
                 console.log(addingResponse)
 
                 setAddVisitState(getInitialState());
@@ -146,24 +157,28 @@ useEffect(() => {
     return (
         <>
             <h2>Data wizyty</h2>
-            <DatePickerWithClock pickerHeader="Podaj datę spotkania" dateValue={addVisitState["date"]} changeDateFunction={(newValue) =>setSingleProperty("date", newValue)}></DatePickerWithClock>
+            <DatePickerWithClock pickerHeader="Podaj datę wizyty" dateValue={addVisitState["date"]} changeDateFunction={(newValue) =>setSingleProperty("date", newValue)}></DatePickerWithClock>
             <h2>Podaj długość wizyty</h2>
             <ControlledNumberInput value={addVisitState.visitDuration} id="visitDurationInput" onchangeFunction={(newValue) => setSingleProperty("visitDuration", newValue)}/>
-            <h2>Krótki opis spotkania</h2>
+            <h2>Krótki opis wizyty</h2>
             <ControlledTextInput placeholderValue="Podaj krótki opis wizyty..." fieldValue={addVisitState["shortDesc"]} id="shortMeetingDesc" changeFieldValue={(newValue) => setSingleProperty("shortDesc", newValue)}></ControlledTextInput>
-            <h2>Dłuższy opis spotkania</h2>
-            <ControlledTextArea id="longVisitInput" placeholderValue="Podaj długi opis spotkania..." fieldValue={addVisitState["longDesc"]} changeFieldValue={(newValue) => setSingleProperty("longDesc", newValue)}/>
+            <h2>Dłuższy opis wizyty</h2>
+            <ControlledTextArea id="longVisitInput" placeholderValue="Podaj długi opis wizyty..." fieldValue={addVisitState["longDesc"]} changeFieldValue={(newValue) => setSingleProperty("longDesc", newValue)}/>
             <HumansTileSeletor 
                 selectorInputValue={addVisitState.humanSelectorInputValue} 
                 suggestedHumans={visibleSuggestedHumans} 
                 chosenHumans={addVisitState.chosenHumans}  
-                headerText="Wybierz towarzystwo"  
+                headerText="Wybierz gości"  
                 onInputValueChange={(newValue) => setSingleProperty("humanSelectorInputValue", newValue)} selectedHumansHeaderText="Wybrane towarzystwo" 
                 onSuggestedTileClickFunction={addHumanToChosen}
                 tileRemoverFunction={removeTileFromChosen}
             /> 
-            <StyledButton id="addMeetingButton" onClick={() => setIsAdding(true)}>Dodaj spotkanie</StyledButton>            
-            
+            <StyledButton id="addMeetingButton" onClick={() => setIsAdding(true)}>Dodaj wizytę</StyledButton>            
+            {
+                insertResult.status && (
+                    <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />
+                )
+            }            
         </>
     )
 
