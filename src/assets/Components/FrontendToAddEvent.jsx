@@ -15,6 +15,7 @@ import { Pool } from "@mui/icons-material";
 const StyledButton = styled.button`
     width: 50%;
     background-color: white;
+    margin-bottom: 40px;
     border: 2px solid black;
     font-weight: 900;
     font-size: 30px;
