@@ -26,6 +26,10 @@ function getHumanPhotoUrl(humanId) {
     return fs.existsSync(photoPath) ? `http://localhost:3000/human-photo/${humanId}.jpg`: defaultPhoto
 }
 
+function toISODateTime(date) {
+    return date.toISOString().slice(0, 19) // YYYY-MM-DDTHH:mm:ss
+}
+
 export default async function getCalendar(year) {
 
     const daysObjects = {}
@@ -72,7 +76,7 @@ export default async function getCalendar(year) {
             const dayKey = day.toLocaleDateString('sv-SE')
             if (!daysObjects[dayKey]) continue
 
-            const interactionKey = startDate.toLocaleDateString('sv-SE')
+            const interactionKey = toISODateTime(startDate)
 
             daysObjects[dayKey].interactionsDict[interactionKey] = visit.visitShortDesc
 
@@ -119,58 +123,59 @@ export default async function getCalendar(year) {
         }
 
         if (!Object.values(dayObj.interactionsDict).includes(meeting.shortDesc)) {
-            dayObj.interactionsDict[meetingDateString] = meeting.shortDesc
+            const interactionKey = toISODateTime(meetingDate)
+            dayObj.interactionsDict[interactionKey] = meeting.shortDesc
         }
     }
 
 
     const eventsData = `
         SELECT e.id AS id, nameOfEvent AS shortDesc, meComingDate, meLeavingDate, Generic_photo AS genericPhoto, ec.human_id AS humanId
-        FROM event_companion ec
-        JOIN events e ON e.id = ec.event_id
+        FROM events e
+        LEFT JOIN event_companion ec ON e.id = ec.event_id
         WHERE YEAR(meComingDate) = ? OR YEAR(meLeavingDate) = ?
     `
     const [eventsDataReq] = await pool.query(eventsData, [year, year])
-    for (let calendarEvent of eventsDataReq) {
-        const meComingDate = new Date(calendarEvent.meComingDate)
-        const meLeavingDate = new Date(calendarEvent.meLeavingDate)
-        const humanPhotoUrl = getHumanPhotoUrl(calendarEvent.humanId)
-        const shortDesc = calendarEvent.shortDesc
-        let eventPhotoUrl
-        if (calendarEvent.genericPhoto.length > 2) {
-            eventPhotoUrl = getEventPhotoFromGenericPhoto(calendarEvent.genericPhoto)
+
+    for (const calendarEvent of eventsDataReq) {
+    const meComingDate = new Date(calendarEvent.meComingDate)
+    const meLeavingDate = new Date(calendarEvent.meLeavingDate)
+    const shortDesc = calendarEvent.shortDesc
+
+    const hasHuman = calendarEvent.humanId != null
+    const humanPhotoUrl = hasHuman ? getHumanPhotoUrl(calendarEvent.humanId) : null
+
+    const eventPhotoUrl =
+        calendarEvent.genericPhoto.length > 2
+            ? getEventPhotoFromGenericPhoto(calendarEvent.genericPhoto)
+            : getEventPhotoFromId(calendarEvent.id)
+
+    const interactionKey = toISODateTime(meComingDate)
+
+    for (let checkedDate = new Date(meComingDate); checkedDate <= meLeavingDate; checkedDate.setDate(checkedDate.getDate() + 1)) {
+        const dayString = checkedDate.toLocaleDateString('sv-SE')
+        const dayObj = daysObjects[dayString]
+
+        if (dayObj.class === "") {
+            dayObj.class = "event"
+        } else if (!dayObj.class.includes("event")) {
+            dayObj.class += "_event"
         }
-        else {
-            eventPhotoUrl = getEventPhotoFromId(calendarEvent.id)
+
+        if (!(interactionKey in dayObj.interactionsDict)) {
+            dayObj.interactionsDict[interactionKey] = shortDesc
         }
-        for (let checkedDate=meComingDate; checkedDate<=meLeavingDate; checkedDate.setDate(checkedDate.getDate() + 1)) {
-            const dayString = checkedDate.toLocaleDateString('sv-SE')
-            if (daysObjects[dayString]["class"] === "") {
-                daysObjects[dayString] = {
-                    "class": "event",
-                    "interactionsDict": {[meComingDate.toLocaleDateString('sv-SE')]: shortDesc},
-                    "photos": [humanPhotoUrl, eventPhotoUrl]
-                }
-            }
-            else {
-                if (!daysObjects[dayString]["class"].includes("event")) {
-                    daysObjects[dayString]["class"] = daysObjects[dayString]["class"] + "_event"
-                }
 
-                if (!daysObjects[dayString]["photos"].includes(humanPhotoUrl)) {
-                    daysObjects[dayString]["photos"].push(humanPhotoUrl)
-                }
+        if (!dayObj.photos.includes(eventPhotoUrl)) {
+            dayObj.photos.push(eventPhotoUrl)
+        }
 
-                if (!daysObjects[dayString]["photos"].includes(eventPhotoUrl)) {
-                    daysObjects[dayString]["photos"].push(eventPhotoUrl)
-                }
-
-                if (!Object.values(daysObjects[dayString]["interactionsDict"]).includes(shortDesc)) {
-                    daysObjects[dayString]["interactionsDict"] = shortDesc
-                }
-            }
+        if (hasHuman && !dayObj.photos.includes(humanPhotoUrl)) {
+            dayObj.photos.push(humanPhotoUrl)
         }
     }
+}
+
 
 
     const tripsReqText = `
@@ -190,7 +195,7 @@ export default async function getCalendar(year) {
             if (daysObjects[dayString]["class"] === "") {
                 daysObjects[dayString] = {
                     "class": "trip",
-                    "interactionsDict": {[dateStart.toLocaleDateString('sv-SE')]: shortDesc},
+                    "interactionsDict": {[toISODateTime(dateStart)]: shortDesc},
                     "photos": [humanPhotoUrl]
                 }
             }
@@ -202,7 +207,7 @@ export default async function getCalendar(year) {
                     daysObjects[dayString]["photos"].push(humanPhotoUrl)
                 }
                 if (!Object.values(daysObjects[dayString]["interactionsDict"]).includes(shortDesc)) {
-                    daysObjects[dayString]["interactionsDict"] = shortDesc
+                    daysObjects[dayString]["interactionsDict"][toISODateTime(dateStart)] = shortDesc
                 }
             }
         }
