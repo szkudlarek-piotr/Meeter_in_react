@@ -22,7 +22,9 @@ import getHumanPlaces from './getHumanPlaces.js'
 import getHumanVisits from './getHumanVisits.js'
 import getHumanMeetings from './getHumanMeetings.js'
 import getHumanEvents from './getHumanEvents.js'
+import getCalendar from './getCalendar.js'
 import addWedding from './addWedding.js'
+//import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -134,6 +136,29 @@ app.get("/get-humans-sorted-filtered", async(req, res) => {
     console.log(error)
   }
 
+})
+
+app.get("/get-calendar", async(req, res) => {
+  const year = req.query.year
+  try {
+    const yearData = await getCalendar(year)
+    res.send(yearData)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
+
+app.get("/get-random-quote", async(req, res) => {
+  const excludedQuoteIds = req.query.excludedQuotes
+  const playerId = req.query.playerId
+  try {
+    const quoteReqResult = getQuoteForGuessingWithExcludedQuoteIds(excludedQuoteIds, playerId)
+    res.send(quoteReqResult)
+  }
+  catch (error) {
+    res.send(error)
+  }
 })
 
 app.get("/get-places-from-substring", async(req, res) => {
