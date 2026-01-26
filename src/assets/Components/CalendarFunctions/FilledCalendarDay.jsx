@@ -22,20 +22,25 @@ const DayStyle = styled.div`
 `
 export default function FilledCalendarDay({dayClass, photosArr, dayTitle, time}) {
     let dayColor
-    switch (dayClass) {
-        case "visit":
-            dayColor = "#ff4700"
-            break
-        case "meeting":
-            dayColor = "#36fc36"
-            break
-        case "visit_meeting":
-            dayColor = "#fe03fe"
-            break
-        case "event":
-            dayColor = "#0d7eda"
-            break;
+    if (dayClass.includes("trip")) {
+        dayColor = "#fbff04"
+    } else {
+        switch (dayClass) {
+            case "visit":
+                dayColor = "#ff4700"
+                break
+            case "meeting":
+                dayColor = "#36fc36"
+                break
+            case "visit_meeting":
+                dayColor = "#fe03fe"
+                break
+            case "event":
+                dayColor = "#0d7eda"
+                break
+        }
     }
+
     const index = Math.floor(time / 2) % photosArr.length
     return (
         <DayStyle title={dayTitle} style={{backgroundColor: dayColor}}>
