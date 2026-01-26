@@ -18,6 +18,7 @@ const DayStyle = styled.div`
         margin-right: auto;
         border: 1px solid black;
         border-radius: 10px;
+        background-color: white;
     }
 `
 export default function FilledCalendarDay({dayClass, photosArr, dayTitle, time}) {
