@@ -6,6 +6,8 @@ const StyledTextarea = styled.textarea`
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    flex-shrink: 0;
+    border-radius: 10px;
 `;
 
 export default function ControlledTextArea({
