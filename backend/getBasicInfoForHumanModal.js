@@ -6,6 +6,7 @@ import fs from 'fs'
 import createDateString from './multiuseFunctions/dateToString.js'
 import getDefinedPlacesNumber from './getDefinedPlacesNumber.js'
 import getHumanSuperpowers from './getHumanSuperpowers.js'
+import getOftenSeenWith from './getOftenSenWith.js'
 import { fileURLToPath } from "url"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -322,7 +323,9 @@ WITH rankedVisits AS (
         ORDER BY category_count DESC;
         `
         const [placesCategoriesQuery] = await pool.query(placesCategoriesQueryText, [humanId, humanId, humanId, humanId, humanId, humanId, humanId])
-        returnedDict["interactionPlacesCategories"] = placesCategoriesQuery       
+        returnedDict["interactionPlacesCategories"] = placesCategoriesQuery
+        const oftenSeenWithData = await getOftenSeenWith(humanId)
+        returnedDict["oftenSeenWith"] = oftenSeenWithData   
         
         try {
             const numberOfDefinedPlaces = await getDefinedPlacesNumber(humanId)
