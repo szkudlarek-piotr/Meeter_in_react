@@ -10,6 +10,7 @@ import InterationComponent from "./InteractionsComponent.jsx";
 import { placesCategoriesDict } from './PlacesCategoriesDict.js'
 import InteractionsMap from "./HumanModalSubcomponents/InteractionsMap.jsx";
 import QuotesDataInModal from "./HumanModalSubcomponents/QuotesDataInModal.jsx";
+import BasicHumanData from './HumanModalSubcomponents/BasicHumanData.jsx'
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -27,23 +28,6 @@ const ModalBox = styled.div`
   display: flex;
   height: 90%;           /* wysokość całego modala */
   box-sizing: border-box;
-`
-const SuperpowersContainer = styled.div`
-  display: flex;
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 30px;
-  margin-bottom: 0px;
-  justify-content: space-evenly;
-
-`
-
-const SuperpowerIcon = styled.img`
-  width: 70px;
-  height: 70px;
-  margin-left: 15px;
-  margin-right: 15px;
 `
 const MenuBox = styled.div`
     height: 100%;
@@ -63,13 +47,6 @@ const ContentBox = styled.div`
     overflow-y: hidden;
 `
 
-const HumanPhotoInModal = styled.img`
-  width: 20%;
-  border-radius: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid black;
-`
 
 const StyledTextContainer = styled.div`
   font-size: 24px;
@@ -80,29 +57,6 @@ const StyledTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;      
-`
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  border: 3px solid black;   /* gruba obwódka */
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 30px;
-`
-
-const StyledTableHeader = styled.th`
-  border: 1px solid black;
-  min-width: 250px;
-`
-
-const StyledTableRow = styled.tr`
-  font: Arial;
-`
-
-const StyledTableCell = styled.td`
-  border: 1px solid black;
-  padding: 8px 14px;
 `
 
 const StyledQuoteInQuotesList = styled.blockquote`
@@ -120,6 +74,7 @@ const StyledQuoteInQuotesList = styled.blockquote`
   text-shadow: 0.4px 0.4px 0.8px rgba(0,0,0,0.15);
   border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
 `
+
 const placeIcons = Object.fromEntries(
   Object.entries(placesCategoriesDict).map(([category, file]) => [
     category,
@@ -152,25 +107,12 @@ export default function HumanModal({ isDisplayed, onClose, humanId}) {
   if (!isDisplayed) return null;
 
   const [modalMode, setModalMode] = useState("basicData")
-  const [modalData, setModalData] = useState({
-    superpowers: [],
-    interactionPlacesCategories: []
-  })
   const [quotes, setQuotes] = useState([])
   const [placesData, setPlacesData] = useState([])
   const [visitsData, setVisitsData] = useState([])
   const [meetingsData, setMeetingsData] = useState([])
   const [eventsData, setEventsData] = useState([])
 
-  let mappedSuperpowers = null
-  if (modalData.superpowers.length > 0) {
-    mappedSuperpowers = modalData.superpowers.map((superpower) => <SuperpowerIcon src={superpower.photo} title={superpower.name}/>)
-  }
-
-  let mappedPlaceCategories = null
-  if (modalData.interactionPlacesCategories.length > 0) {
-    mappedPlaceCategories = modalData.interactionPlacesCategories.map((row) => <StyledTableRow><StyledTableCell>{row.category}</StyledTableCell><StyledTableCell>{row.category_count}</StyledTableCell></StyledTableRow>)
-  }
 
   
 let mappedQuotes = quotes.map((quote) => (
@@ -210,18 +152,6 @@ let mappedEvents = eventsData.map((singleEvent) => (
   />
 ))
 
-  useEffect(()=> {
-    const getBasicHumanInfo = async () => {
-      const fetchResult = await fetch(`http://localhost:3000/basic-human-info?humanId=${humanId}`)
-      const humanDataJson = await fetchResult.json()
-      console.log(humanDataJson)
-      setModalData(humanDataJson)
-    }
-    if (modalMode == "basicData") {
-      getBasicHumanInfo()
-    }
-
-  },[modalMode, humanId])
 
   useEffect(() => {
     if (modalMode !== "quotesData") return
@@ -291,31 +221,9 @@ let mappedEvents = eventsData.map((singleEvent) => (
   function renderContent() {
         switch (modalMode) {
             case "basicData":
-            return (
-              <StyledTextContainer>
-                <h1>Podstawowe dane</h1>
-                <HumanPhotoInModal src={modalData.photoDir}/>
-                <SuperpowersContainer className="superpowersContainer">
-                  {mappedSuperpowers}
-                </SuperpowersContainer>
-                <h2>{modalData.fullName}</h2>
-                Liczba wizyt: {modalData.visitsCount} <br/>
-                Liczba spotkań: {modalData.meetingsCount} <br/>
-                Liczba cytatów: {modalData.quotesCount} <br/>
-                {modalData.lastSeen}
-                <h2>Gdzie się widujecie poza tripami?</h2>
-                <StyledTable>
-                  <tr>
-                    <StyledTableHeader>Kategoria miejsca</StyledTableHeader>
-                    <StyledTableHeader>Liczba spotkań</StyledTableHeader>
-                  </tr>
-                  {mappedPlaceCategories}
-
-                </StyledTable>
-
-              </StyledTextContainer>
-            
-            )
+              return (
+                <BasicHumanData humanId={humanId} /> 
+              )
             case "visitsData":
             return (
             <StyledTextContainer>
