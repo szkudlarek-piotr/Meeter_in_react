@@ -5,7 +5,7 @@ export default function ControledTextInputWithHeader({headerText, placeholderVal
     return (
     <div>
         <h2>{headerText}</h2>
-        <ControlledTextInput style={{height: "30px", minWidth: "100px"}} type="text" value={fieldValue} placeholderValue={placeholderValue} onChange={(e) => changeFieldValueFunction(e.target.value)}/>
+        <ControlledTextInput style={{height: "30px", minWidth: "100px"}} type="text" fieldValue={fieldValue} placeholderValue={placeholderValue} changeFieldValue={changeFieldValueFunction}/>
     </div>
     )
 }
