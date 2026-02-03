@@ -39,6 +39,12 @@ export default function FilledCalendarDay({dayClass, photosArr, dayTitle, time})
             case "event":
                 dayColor = "#0d7eda"
                 break
+            case "visit_event":
+                dayColor = "#ab7915"
+                break
+            case "meeting_event":
+                dayColor = "#b52842"
+                break
         }
     }
 
