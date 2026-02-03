@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ControlledTextInput from "./Multiuse/SimpleControlledComponents/ControlledTextInput.jsx";
 import ControledTextInputWithHeader from "./Multiuse/SimpleControlledComponents/ControlledTextInputWithHeader.jsx"
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
@@ -8,6 +8,7 @@ import styled from "styled-components";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
+import DropdownMenuForText from "./Multiuse/DropdownComponents/DropdownMenuForText.jsx";
 
 const DECAY_TIME = 5000
 
@@ -56,33 +57,31 @@ function MapClickHandler({ onClick }) {
 
 export default function FrontendToAddPlace() {
 
+  const defaultCenter = [52.228749899765276, 21.00281945835816]
+
   function setInitialState() {
     return ({
-        placeCategoryInput: "",
-        chosenCategory: "",
-        placeLat: "",
-        placeLon: "",
         addedPlaceName: "",
+        placeCategoryInput: "",
 
-        placeCategorySuggestions: [],
-        selectedPlaceCategoryValue: ""
+        placeLat: defaultCenter[0],
+        placeLon: defaultCenter[1],
+
+        placeCategorySuggestions: []
       })
     }
 
   const [addPlaceState, setAddPlaceState] = useState(setInitialState())
-  const [isAdding, setIsAdding] = useState(false)
-  const [insertResult, setInsertResult] = useState({ message: "", status: null })
+  const dropdownRef = useRef(null)
 
 
-  const defaultCenter = [52.228749899765276, 21.00281945835816]
-
-    function setMapCenter(latitude, longitude) {
-        setAddPlaceState(prevState => ({
-            ...prevState,
-            "placeLat": latitude,
-            "placeLon": longitude
-        }))
-    }
+  function setMapCenter(latitude, longitude) {
+      setAddPlaceState(prevState => ({
+          ...prevState,
+          "placeLat": String(latitude),
+          "placeLon": String(longitude)
+      }))
+  }
 
     function setSingleProperty(propertyName, propertyValue) {
     setAddPlaceState(prevState => ({
@@ -90,6 +89,14 @@ export default function FrontendToAddPlace() {
         [propertyName]: propertyValue
     }));
     }
+  
+  function setPlaceCategory(placeCategory) {
+    setAddPlaceState(prevState => ({
+      ...prevState,
+      "placeCategorySuggestions": [],
+      "placeCategoryInput": placeCategory
+    }))
+  }
 
 
   useEffect(() => {
@@ -102,49 +109,65 @@ export default function FrontendToAddPlace() {
         },
         (err) => {
           console.error("Nie udało się pobrać Twojej lokalizacji. Ustawiam Dworzec Centrany w Warszawie jako Twoją pozycję.", err)
-          setMapCenter([52.22881561496193, 21.003034035068655])
+          //defaultCenter([52.22881561496193, 21.003034035068655])
         }
       );
     }
     else {
-
+      console.log("Nie wyrażono zgody na udostępnienie lokalizacji.")
     }
   }, [])
 
-    useEffect(() =>{
-        if (isAdding == false ) return;
-        const addPlaceFunction = async () => {
-          try {
-            const addPlaceReq = await fetch(`http://localhost:3000/add-place`, 
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        name: addPlaceState.addedPlaceName,
-                        category: addPlaceState.placeCategoryInput,
-                        lat: addPlaceState.placeLat,
-                        lon: addPlaceState.placeLon
-                    })
-                }
-            )
-            const addPlaceJson = await addPlaceReq.json()
-            setInsertResult({status: "1", message: `Pomyślnie dodano ${addPlaceState.addedPlaceName} do bazy danych.`})
-          }
-          catch (error) {
+  useEffect(() => {
+    const getPlaceCategories = async () => {
+      if (addPlaceState.placeCategoryInput.length > 2) {
+        const placeCategoriesReq = await fetch(`http://localhost:3000/place-categories?substring=${addPlaceState.placeCategoryInput}`)
+        const categoriesJson = await placeCategoriesReq.json()
+        setSingleProperty("placeCategorySuggestions", categoriesJson)
+      }
+    }
+    getPlaceCategories()
+  }, [addPlaceState.placeCategoryInput])
 
-          }
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setSingleProperty("placeCategorySuggestions", []);
+      }
+    }
 
-        }
-        addPlaceFunction()
-        setAddPlaceState(setInitialState())
-    }, [isAdding])
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-  const lat = parseFloat(addPlaceState.placeLat)
-  const lng = parseFloat(addPlaceState.placeLon)
 
-  const hasValidCoords = Number.isFinite(lat) && Number.isFinite(lng)
+  const addPlace = async () => {
+    const postReq = await fetch(
+      "http://localhost:3000/add-place",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: addPlaceState.addedPlaceName,
+          category: addPlaceState.placeCategoryInput,
+          lat: addPlaceState.placeLat,
+          lon: addPlaceState.placeLon
+        })
+      }
+    )
+    if (postReq.ok) {
+      setAddPlaceState(setInitialState())
+    }
+            
+  }
+
+
+  const hasValidCoords = Number.isFinite(Number(addPlaceState.placeLat)) && Number.isFinite(Number(addPlaceState.placeLon))
 
   return (
     <div style={{ padding: "20px" }}>
@@ -153,13 +176,16 @@ export default function FrontendToAddPlace() {
       <h2>Podaj nazwę miejsca</h2>
       <ControlledTextInput key="addedPlaceNameInput" placeholderValue="Podaj nazwę dodawanego miejsca..." fieldValue={addPlaceState.addedPlaceName} changeFieldValue={(newValue) => setSingleProperty("addedPlaceName", newValue)}/>
 
-      <h2>Wpisz kategorie miejsca</h2>
-      <ControlledTextInput key="addedPlaceCategory" placeholderValue="Podaj kategorię miejsca" fieldValue={addPlaceState.placeCategoryInput} changeFieldValue={(newValue) => setSingleProperty("placeCategoryInput", newValue)} />
+
+      <h2>Wybór kategorii miejsca</h2>
+      <div ref={dropdownRef}>
+        <DropdownMenuForText choiceOptions={addPlaceState.placeCategorySuggestions} onInputChange={(newValue) => setSingleProperty("placeCategoryInput", newValue)} onOptionDoubleClick={setPlaceCategory} inputValue={addPlaceState.placeCategoryInput}/>
+      </div>
 
 
 
       <MapContainer
-        center={[addPlaceState.placeLat, addPlaceState.placeLon]}
+        center={[Number(addPlaceState.placeLat), Number(addPlaceState.placeLon)]}
         zoom={13}
         scrollWheelZoom={true}
         style={{
@@ -179,14 +205,17 @@ export default function FrontendToAddPlace() {
         />
 
         {hasValidCoords && (
-          <Marker position={[lat, lng]}>
+          <Marker
+            key={`${addPlaceState.placeLat}-${addPlaceState.placeLon}`}
+            position={[Number(addPlaceState.placeLat), Number(addPlaceState.placeLon)]}
+          >
             <Popup>
               <b>{addPlaceState.addedPlaceName}</b><br />
-              {addPlaceState.addedPlaceCategory}
+              {addPlaceState.placeCategoryInput}
             </Popup>
           </Marker>
         )}
-        <ChangeView center={hasValidCoords ? [lat, lng] : defaultCenter} />
+        <ChangeView center={hasValidCoords ? [Number(addPlaceState.placeLat), Number(addPlaceState.placeLon)] : defaultCenter} />
 
 
       </MapContainer>
@@ -194,15 +223,15 @@ export default function FrontendToAddPlace() {
       <h2>Współrzędne miejsca</h2>
       <div style={{width: "100%", minHeight: "200px", display: "flex", justifyContent: "space-evenly", marginTop: "40px" }}>
         <ControledTextInputWithHeader headerText="Szerokość geograficzna" fieldValue={addPlaceState.placeLat} changeFieldValueFunction={(newValue) => setSingleProperty("placeLat", newValue)}/>
+        
         <ControledTextInputWithHeader headerText="Długość geograficzna" fieldValue={addPlaceState.placeLon} changeFieldValueFunction={(newValue) => setSingleProperty("placeLon", newValue)}/>
+        
+
       </div>
 
 
-      <StyledButton onClick={() => setIsAdding(true)}>Dodaj miejsce</StyledButton>
-      {
-        insertResult.status && (
-          <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />)
-      }
+      <StyledButton onClick={() => addPlace()}>Dodaj miejsce</StyledButton>
+
     </div>
   );
 }

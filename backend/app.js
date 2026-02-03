@@ -24,6 +24,7 @@ import getHumanMeetings from './getHumanMeetings.js'
 import getHumanEvents from './getHumanEvents.js'
 import getCalendar from './getCalendar.js'
 import addWedding from './addWedding.js'
+import getPlaceCategories from './getPLaceCategories.js'
 //import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -234,6 +235,17 @@ app.get("/human-events", async(req, res) => {
   }
   catch (error) {
     console.log(error)
+  }
+})
+
+app.get("/place-categories", async(req, res) => {
+  const substring = req.query.substring
+  try {
+    const result = await getPlaceCategories(substring)
+    res.send(result)
+  }
+  catch (error) {
+    res.send(error)
   }
 })
 
