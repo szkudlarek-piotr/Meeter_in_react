@@ -12,6 +12,7 @@ import FrontendToAddQuote from './assets/Components/FrontendToAddQuote.jsx'
 import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
 import FrontendForGuessingQuoteAuthor from './assets/Components/FrontendForGuessingQuoteAuthor.jsx'
 import NewCalendar from './assets/Components/CalendarFunctions/NewCalendar.jsx'
+import FrontendToAddHuman from './assets/Components/FrontendToAddHuman.jsx'
 import { useState } from 'react'
 
 import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
@@ -37,7 +38,7 @@ function App() {
       mainContent = "Tu będą filmiki taneczne";
       break;
     case "addHuman":
-      mainContent = "Tu będzie dodawanie człowieka";
+      mainContent = <FrontendToAddHuman/>
       break;
     case "addVisit":
       mainContent = <FrontendToAddVisit/>
