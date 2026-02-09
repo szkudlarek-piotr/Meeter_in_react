@@ -49,7 +49,7 @@ The modal also contains a **Quotes** section, where quotes can be **added and br
 ---
 
 #### Calendar View — Visits & Meetings  
-A calendar-based view used to **track visits and meetings over time**.
+A calendar-based view used to **track visits, meetings, events, trips and weddings over time**.
 
 Each visit represents a single interaction stored in the database.
 
