@@ -33,7 +33,6 @@ export default function FrontendToAddQuote() {
     }
 
     const [addQuoteState, setAddQuoteState] = useState(getInitialState())
-    const [isAdding, setIsAdding] = useState(false)
     const [insertResult, setInsertResult] = useState({ message: "", status: null });
 
     function setSingleProperty(propertyName, changedValue) {
@@ -71,30 +70,31 @@ export default function FrontendToAddQuote() {
 
     }, [addQuoteState.humanInputValue])
 
-    useEffect(() =>{
-        if (isAdding == false ) return;
-        const addQuoteFunction = async () => {
-            const addQuoteReq = await fetch(`http://localhost:3000/add-quote`, 
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        humanId: addQuoteState.chosenAuthorId,
-                        quote: addQuoteState.quoteValue,
-                        isPublic: addQuoteState.isPublic
-                    })
-                }
-            )
-            const addQuoteJson = await addQuoteReq.json()
-            if (addQuoteReq.ok) {
-                setAddQuoteState(getInitialState())
-                setInsertResult({message: "Pomyślnie dodano cytat!", status: "1"})
+
+    const addQuote = async () => {
+        const addQuoteReq = await fetch(`http://localhost:3000/add-quote`, 
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    humanId: addQuoteState.chosenAuthorId,
+                    quote: addQuoteState.quoteValue,
+                    isPublic: addQuoteState.isPublic
+                })
             }
+        )
+        const addQuoteJson = await addQuoteReq.json()
+        if (addQuoteReq.ok) {
+            setAddQuoteState(getInitialState())
+            setInsertResult({message: "Pomyślnie dodano cytat!", status: "1"})
         }
-        addQuoteFunction()
-    }, [isAdding])
+        else {
+            setInsertResult({message: "Nie udało się dodać cytatu!", status: "-1"})
+        }
+    }
+
 
     return (
     <>
@@ -112,7 +112,7 @@ export default function FrontendToAddQuote() {
         onChangeFunction={setQuotePrivacy}
 
         /> <br/>
-        <StyledButton type="button" onClick={() => {setIsAdding(true);}}>Dodaj cytat!</StyledButton>
+        <StyledButton type="button" onClick={() => addQuote()}>Dodaj cytat!</StyledButton>
         {
             insertResult.status && (
                 <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />
