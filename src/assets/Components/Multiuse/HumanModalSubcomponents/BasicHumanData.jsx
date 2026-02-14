@@ -141,10 +141,16 @@ export default function BasicHumanData({humanId}) {
                 Liczba cytatów: {basicHumanData.quotesCount} <br/>
                 {spouseInfo.length > 0 && spouseInfo} <br/>
                 {basicHumanData.lastSeen}
-                <h2>Często widywany z:</h2>
-                <OftenSeenWithContainer>
-                  {mappedOftenSeenWith}
-                </OftenSeenWithContainer>
+                
+                {mappedOftenSeenWith.length > 0 && (
+                  <>
+                    <h2>Często widywany z:</h2>
+                    <OftenSeenWithContainer>
+                      {mappedOftenSeenWith}
+                    </OftenSeenWithContainer>
+                  </>
+                )}
+
                 <h2>Gdzie się widujecie poza tripami?</h2>
                 <StyledTable>
                   <tr>
