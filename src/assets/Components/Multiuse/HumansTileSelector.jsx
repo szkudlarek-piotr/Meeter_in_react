@@ -11,6 +11,7 @@ import HumanSelectorTileElement from "./HumanSelectorTileElement"
         margin-right: 10%;
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-evenly;
 
     `
 
