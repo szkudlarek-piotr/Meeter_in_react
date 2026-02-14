@@ -21,13 +21,14 @@ import styled from 'styled-components'
         &>.tileClosingCross {
             position: relative;
             left: 85%;
-            width: 20px;
-            height: 20px;
+            width: 10%;
+            aspect-ratio: 1/1;
             font-weight: 900;
             border-radius: 50%;
             font-size: 15px;
             border: 1px solid black;
-            top: 20px;
+            top: 5%;
+            cursor: pointer;
         }
         &:hover {
             background-color: red
