@@ -11,6 +11,7 @@ import { placesCategoriesDict } from './PlacesCategoriesDict.js'
 import InteractionsMap from "./HumanModalSubcomponents/InteractionsMap.jsx";
 import QuotesDataInModal from "./HumanModalSubcomponents/QuotesDataInModal.jsx";
 import BasicHumanData from './HumanModalSubcomponents/BasicHumanData.jsx'
+import TripsDataInModal from "./HumanModalSubcomponents/TripsDataInModal.jsx";
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -250,8 +251,8 @@ let mappedEvents = eventsData.map((singleEvent) => (
             return (
             
               <StyledTextContainer>
-                <h1>Podróże</h1>
-                {}
+                <h1 style={{marginTop: "5px", marginBottom: "5px"}}>Podróże</h1>
+                <TripsDataInModal humanId={humanId}/>
               </StyledTextContainer>
             )
             case "quotesData":
