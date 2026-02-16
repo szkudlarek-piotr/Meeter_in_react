@@ -25,6 +25,7 @@ import getHumanEvents from './getHumanEvents.js'
 import getCalendar from './getCalendar.js'
 import addWedding from './addWedding.js'
 import getPlaceCategories from './getPLaceCategories.js'
+import getHumanTrips from './getHumanTrips.js'
 //import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -41,6 +42,7 @@ app.use("/human-photo", express.static(path.join(__dirname, "photos")));
 app.use("/event-photo", express.static(path.join(__dirname, "events")));
 app.use("/superpowers", express.static(path.join(__dirname, "superpower_icons")));
 app.use("/map-icons", express.static(path.join(__dirname, "map_icons")));
+app.use("/trips", express.static(path.join(__dirname, "trips")));
 
 function getHumanPhotoUrl(humanId) {
   const photosDir = path.join(__dirname, "photos");
@@ -249,6 +251,18 @@ app.get("/place-categories", async(req, res) => {
   }
 })
 
+
+app.get("/human-trips", async(req, res) => {
+  const humanId = req.query.humanId
+  try {
+    const result = await getHumanTrips(humanId)
+    res.send(result)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
+
 app.post("/add-meeting", async(req, res) => {
   const date = req.query.date
   const placeText = req.query.placeText
@@ -304,6 +318,7 @@ app.post("/add-visiting-humans", async(req, res) => {
 
 app.post("/add-event", async(req, res) => {
   console.log("Będę doawał event.")
+  console.log(req.body)
   const eventName = req.body.name
   const startDate = req.body.startDate
   const stopDate = req.body.stopDate
