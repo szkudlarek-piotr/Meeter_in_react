@@ -26,33 +26,36 @@ export default async function getHumanTrips(human_id) {
     ORDER BY c.Date_start DESC
     `
     const [tripsQuery] = await pool.query(queryText, [human_id])
+    let returned_arr = []
     const tripsDict = {}
     for (let trip of tripsQuery) {
-        if (!tripsDict.hasOwnProperty(trip.trip_id)) {
-            tripsDict[trip.trip_id] = {"id": trip.trip_id, "short_desc": trip.trip_short_description, "trip_start": createDateString(trip.trip_start), "trip_stop": createDateString(trip.trip_stop), "companion": [{"name": trip.full_name, "photo": getHumanPhotoUrl(trip.human_id)}]}
+        if (!tripsDict.hasOwnProperty(trip.trip_start)) {
+            tripsDict[trip.trip_start] = {"id": trip.trip_id, "short_desc": trip.trip_short_description, "trip_start": createDateString(trip.trip_start), "trip_stop": createDateString(trip.trip_stop), "companion": [{"name": trip.full_name, "photo": getHumanPhotoUrl(trip.human_id)}]}
+            
         }
         else {
-            tripsDict[trip.trip_id]["companion"].push({"name": trip.full_name, "photo": getHumanPhotoUrl(trip.human_id)})
+            tripsDict[trip.trip_start]["companion"].push({"name": trip.full_name, "photo": getHumanPhotoUrl(trip.human_id)})
         }
         if (Object.keys(tripsDict).length > 0) {
-            for (let tripId of Object.keys(tripsDict)) {
+            for (let tripStartDate of Object.keys(tripsDict)) {
                 const tripPlacesDataReq = "SELECT * FROM places WHERE id IN (SELECT place_id FROM trip_place WHERE trip_id = ?)"
-                const tripPlacesData = await pool.query(tripPlacesDataReq, [tripId])
-                tripsDict[tripId]["places"] = tripPlacesData
+                const [tripPlacesData] = await pool.query(tripPlacesDataReq, [tripsDict[tripStartDate]["id"]])
+                tripsDict[tripStartDate]["places"] = tripPlacesData
             }
         }
-        for (let tripId of Object.keys(tripsDict)) {
-            tripsDict[tripId]["photos"] = []
-            const potentialTripPhotosDir = path.join(__dirname, "trips", String(tripId))
+        for (let trip_start of Object.keys(tripsDict)) {
+            tripsDict[trip_start]["photos"] = []
+            const potentialTripPhotosDir = path.join(__dirname, "trips", String(tripsDict[trip_start]["id"]))
             if (fs.existsSync(potentialTripPhotosDir)) {
                 const photosList = fs.readdirSync(potentialTripPhotosDir)
                 for (let photo of photosList) {
-                    tripsDict[tripId]["photos"].push(`http://localhost:3000/trips/${tripId}/${photo}`)
+                    tripsDict[trip_start]["photos"].push(`http://localhost:3000/trips/${tripsDict[trip_start]["id"]}/${photo}`)
                 }
             }
         }
 
     }
-    return tripsDict
+    const trips_arr = Object.values(tripsDict)
+    return trips_arr
 }
-
+getHumanTrips(7)

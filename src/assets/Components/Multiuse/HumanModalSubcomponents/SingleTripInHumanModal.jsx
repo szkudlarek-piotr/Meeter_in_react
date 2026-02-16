@@ -70,7 +70,7 @@ function FitMapToMarkers({ places }) {
   useEffect(() => {
     if (!map || places.length === 0) return;
 
-    const bounds = L.latLngBounds(places[0].map(p => [p.latitude, p.longitude]));
+    const bounds = L.latLngBounds(places.map(p => [p.latitude, p.longitude]));
     map.fitBounds(bounds, { padding: [20, 20] }); // padding = margines w px
   }, [map, places]);
 
@@ -83,14 +83,14 @@ export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, 
         <SinglePhoto src={photo} key={photo}/>
     ))
     
-    let mappedPlaces = places[0].map((place) => 
+    let mappedPlaces = places.map((place) => 
     <Marker position={[place.latitude, place.longitude]} key={place.place_name} icon={getIconSafe(place.category)}>
         <Popup>
             <b>{place.place_name}</b><br/>
             {place.category}
         </Popup>
     </Marker>)
-
+    console.log(places)
 
     function FixMapResize() {
         const map = useMap();

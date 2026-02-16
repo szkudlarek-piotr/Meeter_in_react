@@ -15,7 +15,7 @@ export default function TripsDataInModal({humanId}) {
         getHumanTrips()
     }, [])
 
-    const mappedTrips = Object.values(tripsData).map((trip) => (
+    const mappedTrips = tripsData.map((trip) => (
         <SingleTripInHumanModal dateStart={trip.trip_start} dateStop={trip.trip_stop} shortDesc={trip.short_desc} photosArr={trip.photos} places={trip.places} companion={trip.companion}/>))
 
     return (
