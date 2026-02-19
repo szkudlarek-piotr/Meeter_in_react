@@ -13,6 +13,7 @@ export default async function getHumanQuotes(humanId) {
     FROM golden_quotes
     WHERE is_public = 1
     AND human_id = ?
+    ORDER BY quote_id DESC
     `
     const [quotesQuery] = await pool.query(quotesQuoeryText, [humanId])
     return quotesQuery
