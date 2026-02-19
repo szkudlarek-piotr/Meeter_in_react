@@ -139,7 +139,10 @@ export default function BasicHumanData({humanId}) {
                 Liczba wizyt: {basicHumanData.visitsCount} <br/>
                 Liczba spotkań: {basicHumanData.meetingsCount} <br/>
                 Liczba cytatów: {basicHumanData.quotesCount} <br/>
-                {spouseInfo.length > 0 && spouseInfo} <br/>
+                {spouseInfo.length > 0 && (
+                  <>
+                    {spouseInfo} <br/>
+                  </>)} 
                 {basicHumanData.lastSeen}
                 
                 {mappedOftenSeenWith.length > 0 && (
