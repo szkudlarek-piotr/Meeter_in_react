@@ -26,6 +26,7 @@ import getCalendar from './getCalendar.js'
 import addWedding from './addWedding.js'
 import getPlaceCategories from './getPLaceCategories.js'
 import getHumanTrips from './getHumanTrips.js'
+import { exec } from "child_process"
 //import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -261,6 +262,22 @@ app.get("/human-trips", async(req, res) => {
   catch (error) {
     res.send(error)
   }
+})
+
+app.get("/human-interactions-centroids", (req, res) => {
+  const minDistance = req.query.minDistance
+  const humanId = req.query.humanId
+  exec(
+    `python3 ./get_interactions_centroids_kmeans/main.py --min-distance ${minDistance} --human-id ${humanId}`,
+    (err, stdout, stderr) => {
+      if (err) {
+        console.error(err)
+        return res.status(500).send("Python error")
+      }
+
+      res.json(JSON.parse(stdout))
+    }
+  )
 })
 
 app.post("/add-meeting", async(req, res) => {
