@@ -39,3 +39,5 @@ backend/events/
 backend/map_icons/
 backend/functionalPhotos/
 backend/.env
+backend/get_interactions_centroids_kmeans/.env
+backend/get_interactions_centroids_kmeans/__pycache__/
