@@ -231,7 +231,7 @@ export default function FrontendToAddPlace() {
 
 
       <StyledButton onClick={() => addPlace()}>Dodaj miejsce</StyledButton>
-
+      <InsertResultModal messageText="" decayTime={DECAY_TIME} status=""/>
     </div>
   );
 }
