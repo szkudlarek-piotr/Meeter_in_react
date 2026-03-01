@@ -28,6 +28,7 @@ import getPlaceCategories from './getPLaceCategories.js'
 import getHumanTrips from './getHumanTrips.js'
 import { exec } from "child_process"
 import getCliqueFromSubstring from './getCliqueFromSubstring.js'
+import addHuman from './addHuman.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -289,6 +290,18 @@ app.get("/human-interactions-centroids", (req, res) => {
       res.json(JSON.parse(stdout))
     }
   )
+})
+
+app.post("/add-human", async(req, res) => {
+  const {name, surname, gender, livesWhere, cliqueId, fbLink, photoLink} = req.body
+  try {
+    const addHumanResult = await addHuman(name, surname, gender, livesWhere, cliqueId, fbLink, photoLink)
+    res.send(addHumanResult)
+  }
+  catch (error) {
+    res.send(error)
+  }
+
 })
 
 app.post("/add-meeting", async(req, res) => {
