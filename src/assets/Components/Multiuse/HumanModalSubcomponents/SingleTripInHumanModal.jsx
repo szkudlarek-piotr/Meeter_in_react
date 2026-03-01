@@ -90,7 +90,6 @@ export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, 
             {place.category}
         </Popup>
     </Marker>)
-    console.log(places)
 
     function FixMapResize() {
         const map = useMap();

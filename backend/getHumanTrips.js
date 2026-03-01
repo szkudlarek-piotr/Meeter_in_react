@@ -26,7 +26,6 @@ export default async function getHumanTrips(human_id) {
     ORDER BY c.Date_start DESC
     `
     const [tripsQuery] = await pool.query(queryText, [human_id])
-    let returned_arr = []
     const tripsDict = {}
     for (let trip of tripsQuery) {
         if (!tripsDict.hasOwnProperty(trip.trip_start)) {
