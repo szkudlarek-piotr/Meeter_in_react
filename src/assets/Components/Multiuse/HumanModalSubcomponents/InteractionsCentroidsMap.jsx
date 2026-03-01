@@ -22,7 +22,7 @@ export default function InteractionsCentroidsMap({humanId}) {
     const [centroidsData, setCentroidsData] = useState(
         {
             "centroids": [],
-            "minDistance": 100
+            "minDistance": 10
         })
     
     const debouncedMinDistance = useDebounce(centroidsData.minDistance, 500);     
