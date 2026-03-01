@@ -27,7 +27,7 @@ import addWedding from './addWedding.js'
 import getPlaceCategories from './getPLaceCategories.js'
 import getHumanTrips from './getHumanTrips.js'
 import { exec } from "child_process"
-//import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
+import getCliqueFromSubstring from './getCliqueFromSubstring.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -261,6 +261,17 @@ app.get("/human-trips", async(req, res) => {
   }
   catch (error) {
     res.send(error)
+  }
+})
+
+app.get("/cliques-from-substring", async(req, res) => {
+  const cliqueSubstring = req.query.substring
+  try {
+    const suggestedCliques = await getCliqueFromSubstring(cliqueSubstring)
+    res.send(suggestedCliques)
+  }
+  catch (error) {
+    res.send(`Błąd przy pobieraniu kilki z substringa. Treść błędu: ${error}.`)
   }
 })
 
