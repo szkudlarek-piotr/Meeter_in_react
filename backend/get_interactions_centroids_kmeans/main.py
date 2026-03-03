@@ -13,40 +13,23 @@ def get_interctions_centroids(min_dist, human_id):
     engine = create_engine(os.getenv("db_connection_string"))
 
     sql = text("""
-    WITH places_cte AS (
-        SELECT DISTINCT place_id FROM events
-        WHERE place_id IS NOT NULL
-          AND id IN (
-              SELECT event_id FROM event_companion
-              WHERE human_id = :human_id
-          )
-    
-        UNION
-    
-        SELECT DISTINCT place_id FROM meetings
-        WHERE place_id IS NOT NULL
-          AND id IN (
-              SELECT meeting_id FROM meeting_human
-              WHERE human_id = :human_id
-          )
-    
-        UNION
-    
-        SELECT DISTINCT place_id FROM visits
-        WHERE place_id IS NOT NULL
-          AND visit_id IN (
-              SELECT visit_id FROM visit_guest
-              WHERE guest_id = :human_id
-          )
-    )
-    SELECT
-        p.id,
-        p.place_name,
-        p.category,
-        p.latitude,
-        p.longitude
-    FROM places p
-    JOIN places_cte cte ON cte.place_id = p.id;
+SELECT p.latitude, p.longitude
+FROM places p 
+JOIN visits v ON p.id = v.place_id
+JOIN visit_guest vg ON vg.visit_id = v.visit_id
+WHERE vg.guest_id = :human_id
+UNION ALL
+SELECT p.latitude, p.longitude
+FROM places p 
+JOIN meetings m ON p.id = m.place_id
+JOIN meeting_human mh ON m.ID = mh.meeting_id
+WHERE mh.human_id = :human_id
+UNION ALL
+SELECT p.latitude, p.longitude
+FROM places p 
+JOIN events e ON e.place_id = p.id
+JOIN event_companion ec ON e.id = ec.event_id
+WHERE ec.human_id = :human_id;
     """)
 
     with engine.connect() as conn:
