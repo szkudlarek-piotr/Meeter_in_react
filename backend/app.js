@@ -29,6 +29,7 @@ import getHumanTrips from './getHumanTrips.js'
 import { exec } from "child_process"
 import getCliqueFromSubstring from './getCliqueFromSubstring.js'
 import addHuman from './addHuman.js'
+import addDancingVideo from './addDancingVideo.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -415,6 +416,18 @@ app.post("/add-place", async(req, res) => {
   try {
     const result = await addPlace(name, category, lat, lon)
     res.send(result)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
+
+
+app.post("add-dancing-video", async(req, res) => {
+  const videoLink = req.body.fbLink
+  try {
+    const addVideoResult = await addDancingVideo(videoLink)
+    res.send(addVideoResult)
   }
   catch (error) {
     res.send(error)
