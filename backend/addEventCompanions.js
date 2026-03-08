@@ -7,26 +7,27 @@ const pool = mysql.createPool({
     database : process.env.MYSQL_DATABASE
 }).promise()
 export default async function addEventCompanions(eventId, humanIdsArr) {
+    console.log(humanIdsArr)
     const result = {
         added: [],
         skipped: [],
         errors: []
     };
 
-    for (const humanId of humanIdsArr) {
-        console.log(`dodaję osobę ${humanId} do eventu ${eventId}.`)
+    for (const human of humanIdsArr) {
+        console.log(`dodaję osobę ${JSON.stringify(human.id)} do eventu ${eventId}.`)
         try {
             await pool.execute(
                 `INSERT INTO event_companion (event_id, human_id)
                  VALUES (?, ?)`,
-                [eventId, humanId]
+                [eventId, human.id]
             );
 
-            result.added.push(humanId);
+            result.added.push(human.id);
 
         } catch (err) {
             if (err.code === 'ER_DUP_ENTRY') {
-                result.skipped.push(humanId);
+                result.skipped.push(human.id);
             } else {
                 result.errors.push({
                     humanId,

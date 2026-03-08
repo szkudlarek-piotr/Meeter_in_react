@@ -13,6 +13,7 @@ import FrontendToAddWedding from './assets/Components/FrontendToAddWedding2.jsx'
 import FrontendForGuessingQuoteAuthor from './assets/Components/FrontendForGuessingQuoteAuthor.jsx'
 import NewCalendar from './assets/Components/CalendarFunctions/NewCalendar.jsx'
 import FrontendToAddHuman from './assets/Components/FrontendToAddHuman.jsx'
+import FrontendToAddDancingVideo from './assets/Components/FrontendToAddDancingVideo.jsx'
 import { useState } from 'react'
 
 import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
@@ -63,7 +64,7 @@ function App() {
       mainContent = <FrontendToAddWedding />
       break;
     case "addDancingVideo":
-      mainContent = "Tu będzie dodawanie filmikó tanecznych.";
+      mainContent = <FrontendToAddDancingVideo />
       break;
     case "guessQuoteAuthors":
       mainContent = <FrontendForGuessingQuoteAuthor/>

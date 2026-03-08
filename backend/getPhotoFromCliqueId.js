@@ -6,16 +6,19 @@ const __dirname = path.dirname(__filename);
 
 const cliquesPhotoFolder = path.join(__dirname, "cliques_photos")
 export default function getCliquePhoto(cliqueId) {
-    const possiblePngDir = path.join(cliquesPhotoFolder, `${cliqueId}.png`)
-    const possibleJpgDir = path.join(cliquesPhotoFolder, `${cliqueId}.jpg`)
-    const possibleJpegDir = path.join(cliquesPhotoFolder, `${cliqueId}.jpeg`)
-    if (fs.existsSync(possibleJpgDir)) {
-        return possibleJpgDir
+    const possiblePngName = `${cliqueId}.png`
+    const possibleJpgName = `${cliqueId}.jpg`
+    const possibleJpegName = `${cliqueId}.jpeg`
+    if (fs.existsSync(path.join(cliquesPhotoFolder, possibleJpgName))) {
+        return `hhtp://ww`
     } 
-    if (fs.existsSync(possiblePngDir)) {
+    if (fs.existsSync(path.join(cliquesPhotoFolder, possiblePngName))) {
         return possiblePngDir
     }
-    if (fs.existsSync(possibleJpegDir)) {
+    if (fs.existsSync(path.join(cliquesPhotoFolder, possibleJpegName))) {
         return possibleJpegDir
     } 
 }
+
+
+//do wywalenia

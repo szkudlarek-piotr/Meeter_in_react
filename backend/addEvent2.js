@@ -25,10 +25,10 @@ export default async function addCalendarEvent(eventName, dateStart, dateStop, c
             console.log(photoAddingReq)
             return photoAddingReq
         }
-        case photoAddingInfo.mode == "link" && photoAddingInfo.link.length == 0 && Number.isInteger(placeId): {
+        case photoAddingInfo.mode == "link" && photoAddingInfo.name.length == 0 && Number.isInteger(placeId): {
             let eventAddingReqText = "INSERT INTO `events` (`id`, `nameOfEvent`, `dateStart`, `dateStop`, `meComingDate`, `meLeavingDate`, `place`, `description`, `place_id`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)"
-            let [photoAddingReq] = await pool.query(eventAddingReqText, [eventName, dateStart, dateStop, comingDate, leavingDate, placeName, longDesc, placeId])
-            const insertId = photoAddingReq.inssertId
+            let photoAddingReq = await pool.query(eventAddingReqText, [eventName, dateStart, dateStop, comingDate, leavingDate, placeName, longDesc, placeId])
+            const insertId = photoAddingReq[0].insertId
             const addedPhotoFullName = await downloadPhotoFromLink(photoAddingInfo.link, eventPhotosDir, insertId)
             console.log(photoAddingReq)
             return photoAddingReq
@@ -63,4 +63,3 @@ export default async function addCalendarEvent(eventName, dateStart, dateStop, c
         }
     }
 }
-//addCalendarEvent("Zaćmienie słońca", "2026-08-12T17:00:00", "2026-08-12T17:00:00", "2026-08-12T17:00:00", "2026-08-12T17:00:00", "", "pierwsze zaćmienie słońca w moim życiu", {"link": "https://upload.wikimedia.org/wikipedia/commons/f/f6/20060329-045.jpg", "name": "zacmienie", "mode": "link"}, "")

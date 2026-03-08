@@ -1,9 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import L, { icon } from "leaflet";
 import { placesCategoriesDict } from "../PlacesCategoriesDict";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import DropdownMenuForPlace from '../DropdownComponents/DropdownMenuForPlace2.jsx'
 
 
 
@@ -60,6 +61,11 @@ const getIconSafe = (category) => placeIcons[category] || L.Icon.Default.prototy
 export default function InteractionsMap({humanId}) {
 
     const [placesData, setPlacesData] = useState([])
+    const [dreamDirectionchoice, setDreamDirectionChoice] = useState({
+      "inputValue": "",
+      placeSuggestions: []
+
+    })
 
 
       useEffect(() => {
@@ -112,6 +118,8 @@ export default function InteractionsMap({humanId}) {
                     {placesData.length > 0 ? mappedPlaces : <p>Brak miejsc do wyświetlenia</p>}
                     <FitMapToMarkers places={placesData} />
                 </MapContainer>
+          <h2>Dodaj dream directions</h2>
+          {/*<DropdownMenuForPlace inputValue={weddingState.ceremonyPlaceInputValue} choiceOptions={weddingState.ceremonyPlaceSuggestions} onInputChange={value => setWeddingAttribute("ceremonyPlaceInputValue", value)} placeholder={weddingState.ceremonyPlaceName} onOptionDoubleClick={setCeremonyPlace} />*/}
         </StyledTextContainer>
     )
 }

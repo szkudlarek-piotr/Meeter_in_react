@@ -27,6 +27,7 @@ import addWedding from './addWedding.js'
 import getPlaceCategories from './getPLaceCategories.js'
 import getHumanTrips from './getHumanTrips.js'
 import { exec } from "child_process"
+import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
 import getCliqueFromSubstring from './getCliqueFromSubstring.js'
 import addHuman from './addHuman.js'
 import addDancingVideo from './addDancingVideo.js'
@@ -159,7 +160,7 @@ app.get("/get-random-quote", async(req, res) => {
   const excludedQuoteIds = req.query.excludedQuotes
   const playerId = req.query.playerId
   try {
-    const quoteReqResult = getQuoteForGuessingWithExcludedQuoteIds(excludedQuoteIds, playerId)
+    const quoteReqResult = await getQuoteForGuessingWithExcludedQuoteIds(excludedQuoteIds, playerId)
     res.send(quoteReqResult)
   }
   catch (error) {

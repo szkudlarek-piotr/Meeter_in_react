@@ -70,7 +70,7 @@ SELECT * FROM (
         AND cliques_names.clique_capital IS NOT NULL
     ) AND places.latitude IS NOT NULL
     UNION
-    SELECT places.place_name, "Dream direction" AS category, places.latitude AS lat, places.longitude AS lng, COUNT(places.id) as place_count
+    SELECT DISTINCT places.place_name, "Dream direction" AS category, places.latitude AS lat, places.longitude AS lng, COUNT(places.id) as place_count
     FROM places
     WHERE places.id IN (SELECT place_id FROM wants_to_visit WHERE human_id = ?)
     GROUP BY places.id

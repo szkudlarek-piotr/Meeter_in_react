@@ -10,7 +10,7 @@ import HumansTileSelector from "./Multiuse/HumansTileSelector";
 import DropdownMenuForPlace from "./Multiuse/DropdownComponents/DropdownMenuForPlace2.jsx";
 import RadioOptionsPicker from "./Multiuse/RadioOptionsPicker.jsx";
 import PhotoSelector from "./Multiuse/PhotoSelector.jsx";
-import { Pool } from "@mui/icons-material";
+import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
 
 const StyledButton = styled.button`
     width: 50%;
@@ -52,7 +52,7 @@ export default function FrontendToAddEvent() {
             chosenPhotoAddingOption: "database",
             chosenEventPhotoAddress: "http://localhost:3000/human-photo/anonymous.jpg",
             chosenPhotoFileName: "anonymous.jpg",
-            chosenPhotoName: "anonymous",
+            chosenPhotoName: "",
             chosenPhotoLink: "",
             photoSelectorValue: "",
             suggestedPhotos: []
@@ -60,9 +60,10 @@ export default function FrontendToAddEvent() {
     }
 
 
-
+    const DECAY_TIME = 5000
     const [addEventState, setAddEventState] = useState(setInitialState())
     const [isAdding, setIsAdding] = useState(false)
+    const [insertResult, setInsertResult] = useState({ message: "", status: null })
 
     function setSingleProperty(propName, newValue) {
         setAddEventState(prevState => ({
@@ -133,7 +134,7 @@ export default function FrontendToAddEvent() {
                         placeName: addEventState.chosenPlaceName,
                         placeId: addEventState.chosenPlaceId,
                         photoAddingInfo: {
-                            name: addEventState.chosenPhotoFileName,
+                            name: addEventState.chosenPhotoName,
                             link: addEventState.chosenPhotoLink,
                             mode: addEventState.chosenPhotoAddingOption
                         }
@@ -155,7 +156,16 @@ export default function FrontendToAddEvent() {
                     }
                 )
                 const addCompanionJson = addCompanionReq.json()
-                console.log(addCompanionJson)
+                
+            }
+            if (addCompanionReq.ok && addEventState.chosenHumans.length > 0) {
+                setInsertResult({message: "Pomyślnie dodano wydrzeenie wraz z towarzystwem.", status: "1"})
+            }
+            if (addCompanionReq.ok && addEventState.chosenHumans.length == 0) {
+                setInsertResult({message: "Pomyślnie dodano wydrzenie bez towarzystwa.", status: "1"})
+            }
+            if (!addCompanionReq.ok) {
+                setInsertResult({message: "Podczas dodawania wydarzenia wystąił błąd.", status: "-1"})
             }
             setIsAdding(false)
         }
@@ -279,6 +289,11 @@ export default function FrontendToAddEvent() {
 
             
             <StyledButton type="button" onClick={() => {setIsAdding(true);}}>Dodaj wydarzenie</StyledButton>
+            {
+                insertResult.status && (
+                    <InsertResultModal key={Date.now()} messageText={insertResult.message} status={insertResult.status} decayTime={DECAY_TIME} />
+                )
+            }
         </>
     )
 

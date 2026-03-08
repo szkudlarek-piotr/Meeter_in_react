@@ -44,6 +44,13 @@ const GuessParamsContainer = styled.div`
 
 `
 
+const GuessParamCounter = styled.div`
+    width: 30%;
+    aspect-ratio: 1/1;
+    border: 5px solid green;
+    background-color: yellow;
+`
+
 
 export default function FrontendForGuessingQuoteAuthor() {
     
@@ -56,9 +63,9 @@ export default function FrontendForGuessingQuoteAuthor() {
         guessedAuthorPhoto: "http://localhost:3000/human-photo/anonymous.jpg",
         guessAuthorName: "Złotousty Anonim",
         currentQuote: "Nie udało się pobrać żadnego dostępnego cytatu. Dzięki za grę!",
+        currentQuoteId: 0,
 
-        excludedQuoteIds: [],
-        excludedCliques: [15, 16]
+        excludedQuoteIds: []
     })
     
 
@@ -79,6 +86,14 @@ export default function FrontendForGuessingQuoteAuthor() {
         }))
     }
 
+    function setQuote(quoteObject) {
+        setGuessAuthorState(prev => ({
+            ...prev,
+            "currentQuoteId": quoteObject.quote_id,
+            "currentQuote": quoteObject.quote
+        }))
+    }
+
     useEffect(() => {
         const fillPlayerSuggestions = async () => {
             const playerSuggestionsReq = await fetch(`http://localhost:3000/get-human-from-substring?substring=${guessAuthorState.playerInputValue}`)
@@ -95,8 +110,14 @@ export default function FrontendForGuessingQuoteAuthor() {
     }, [guessAuthorState.playerInputValue])
 
     useEffect(() => {
-        
-    })
+        const getNewQuote = async () => {
+            const getQuoteReq = await fetch(`http://localhost:3000/get-random-quote?excludedQuotes=${guessAuthorState.excludedQuoteIds.join(",")}&playerId=${guessAuthorState.playerId}`)
+            const quoteJson = await getQuoteReq.json()
+            console.log(quoteJson[0])
+            setQuote(quoteJson[0])
+        }
+        getNewQuote()
+    }, [])
 
 
 
