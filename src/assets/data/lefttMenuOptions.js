@@ -1,5 +1,6 @@
 export const leftMenuOptions = [
     {"id": "showNews", "text": "Pokaż newsy", "state": "news"},
+    {"id": "infoAboutYou", "text": "informacje o Tobie", "state": "basicDataAboutYou"},
     {"id": "showAllHumans", "text": "Pokaż wszystkich ludzi", "state": "allHumans"},
     {"id": "showCalendar", "text": "Pokaż kalendarz", "state": "calendar"},
     {"id": "showAllCliques", "text": "Pokaż wszystkie kliki", "state": "allCliques"},
@@ -14,6 +15,7 @@ export const leftMenuOptions = [
     {"id": "addWedding", "text": "Dodaj wesele", "state": "addWedding"},
     {"id": "addDancingVideo", "text": "Dodaj filmik taneczny", "state": "addDancingVideo"},
     {"id": "guessQuoteAuthors", "text": "Zgaduj autorów cytatów", "state": "guessQuoteAuthors"},
+    {"id": "logFrontend", "text": "Zaloguj się", "state": "login"}
 
 
 ]

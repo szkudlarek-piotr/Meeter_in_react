@@ -14,12 +14,18 @@ import FrontendForGuessingQuoteAuthor from './assets/Components/FrontendForGuess
 import NewCalendar from './assets/Components/CalendarFunctions/NewCalendar.jsx'
 import FrontendToAddHuman from './assets/Components/FrontendToAddHuman.jsx'
 import FrontendToAddDancingVideo from './assets/Components/FrontendToAddDancingVideo.jsx'
-import { useState } from 'react'
+import FrontendToLogin from './assets/Components/FrontendToLogin.jsx'
+import BasicDataAboutYou from './assets/Components/BasicDataAboutYou.jsx'
+import { useState, useEffect } from 'react'
+
+
 
 import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
 function App() {
 
   const [ meeterPage, setMeeterPage ] = useState("news")
+
+
 
   let mainContent;
   switch (meeterPage) {
@@ -28,6 +34,12 @@ function App() {
       break;
     case "allHumans":
       mainContent = <AllHumanTiles />
+      break;
+    case "login":
+      mainContent = <FrontendToLogin />
+      break;
+    case "basicDataAboutYou":
+      mainContent = <BasicDataAboutYou />
       break;
     case "calendar":
       mainContent = <NewCalendar year="2026"/>
