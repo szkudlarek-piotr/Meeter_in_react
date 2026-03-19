@@ -14,9 +14,6 @@ export default function BasicDataAboutYou() {
                     }
                 )
                 const receivedInfo = await response.json()
-                const dataToUse = receivedInfo["data"]
-                console.log(dataToUse)
-                console.log(Object.keys(dataToUse))
                 setHumanInfo(receivedInfo)
             } catch (err) {
                 console.log(err)

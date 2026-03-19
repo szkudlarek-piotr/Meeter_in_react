@@ -30,7 +30,11 @@ import { exec } from "child_process"
 import getQuoteForGuessingWithExcludedQuoteIds from './getQuoteForGuessingWithExcludedQuoteIds.js'
 import getCliqueFromSubstring from './getCliqueFromSubstring.js'
 import addHuman from './addHuman.js'
+import getHumanBasicInfoFromSessionToken from './getHumanBasicDataFromSessionToken.js'
 import addDancingVideo from './addDancingVideo.js'
+import checkPassword from './checkLoginData.js'
+import cookieParser from 'cookie-parser'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -38,7 +42,9 @@ const __dirname = path.dirname(__filename)
 
 
 const app = express()
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:5173',     
+    credentials: true}))
 app.use(bodyParser.json())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -47,6 +53,7 @@ app.use("/event-photo", express.static(path.join(__dirname, "events")));
 app.use("/superpowers", express.static(path.join(__dirname, "superpower_icons")));
 app.use("/map-icons", express.static(path.join(__dirname, "map_icons")));
 app.use("/trips", express.static(path.join(__dirname, "trips")));
+app.use(cookieParser())
 
 function getHumanPhotoUrl(humanId) {
   const photosDir = path.join(__dirname, "photos");
@@ -395,6 +402,34 @@ app.post("/add-event-companion", async(req, res) => {
   }
 })
 
+
+app.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body
+    console.log(username, password)
+    console.log("Body z request:", req.body)  
+
+    const result = await checkPassword(username, password)
+
+    if (result.success && result.data?.token) {
+        res.cookie('auth_token', result.data.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 30 * 24 * 60 * 60 * 1000, 
+            sameSite: 'Strict'
+        })
+    }
+
+    res.json(result)
+  }
+  catch (error) {
+    console.log(error)
+    res.send(error)
+  }
+
+})
+
+
 app.post("/add-quote", async(req, res) => {
   const humanId = req.body.humanId
   const quote = req.body.quote
@@ -405,6 +440,20 @@ app.post("/add-quote", async(req, res) => {
   }
   catch (error) {
     console.log(error)
+    res.send(error)
+  }
+})
+
+app.get("/basic-human-data-from-token", async (req, res) => {
+  console.log("pukam do basicdatafromhumantoken")
+  try {
+    const token = req.cookies.auth_token
+    console.log(req.cookies)
+    const humanData = await getHumanBasicInfoFromSessionToken(token)
+    console.log(humanData)
+    res.send(humanData)
+  }
+  catch (error) {
     res.send(error)
   }
 })
