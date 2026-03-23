@@ -13,6 +13,7 @@ import QuotesDataInModal from "./HumanModalSubcomponents/QuotesDataInModal.jsx";
 import BasicHumanData from './HumanModalSubcomponents/BasicHumanData.jsx'
 import TripsDataInModal from "./HumanModalSubcomponents/TripsDataInModal.jsx";
 import InteractionsCentroidsMap from "./HumanModalSubcomponents/InteractionsCentroidsMap.jsx";
+import VisitsForLoggedUser from "./HumanModalSubcomponents/VisitsForLoggedUser.jsx";
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -267,6 +268,8 @@ let mappedEvents = eventsData.map((singleEvent) => (
               return <InteractionsMap humanId={humanId}/>
             case "interactionsCentroid":
               return <InteractionsCentroidsMap humanId={humanId}/>
+            case "visitsForLoggedUser":
+              return <VisitsForLoggedUser humanId={humanId}/>
         }
     }
 
@@ -284,6 +287,7 @@ let mappedEvents = eventsData.map((singleEvent) => (
             <ChoiceOption key="relatiogram" onClick={() => setModalMode("relatiogram")}>Relacjogram</ChoiceOption>
             <ChoiceOption key="interactionsMap2" onClick={() => setModalMode("interactionsMap2")}>Mapa interakcji</ChoiceOption>
             <ChoiceOption key="interactionsCentroid" onClick={() => setModalMode("interactionsCentroid")}>Centroidy interakcji</ChoiceOption>
+            <ChoiceOption key="visitsForLoggedUser" onClick={() => setModalMode("visitsForLoggedUser")}>Wizyty (zalogowany użytkownik)</ChoiceOption>
         </MenuBox>
         <ContentBox>
             {renderContent()}

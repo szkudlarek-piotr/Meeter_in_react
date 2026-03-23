@@ -34,6 +34,7 @@ import getHumanBasicInfoFromSessionToken from './getHumanBasicDataFromSessionTok
 import addDancingVideo from './addDancingVideo.js'
 import checkPassword from './checkLoginData.js'
 import cookieParser from 'cookie-parser'
+import getVisitsForLoggedHuman from './getVisitsForLoggedHuman.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -455,6 +456,19 @@ app.get("/basic-human-data-from-token", async (req, res) => {
   }
   catch (error) {
     res.send(error)
+  }
+})
+
+app.get("/human-visits-for-logged-user", async(req, res) => {
+  try {
+    const token = req.cookies.auth_token
+    const humanId = req.query.humanId
+    const visitsData = await getVisitsForLoggedHuman(token, humanId)
+    console.log(visitsData)
+    res.json(visitsData)
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message })
   }
 })
 
