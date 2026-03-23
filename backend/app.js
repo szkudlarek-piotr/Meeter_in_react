@@ -446,7 +446,6 @@ app.post("/add-quote", async(req, res) => {
 })
 
 app.get("/basic-human-data-from-token", async (req, res) => {
-  console.log("pukam do basicdatafromhumantoken")
   try {
     const token = req.cookies.auth_token
     console.log(req.cookies)
