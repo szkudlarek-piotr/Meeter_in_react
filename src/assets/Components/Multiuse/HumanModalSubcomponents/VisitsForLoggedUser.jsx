@@ -39,7 +39,7 @@ export default function VisitsForLoggedUser({ humanId }) {
     }
 
     return (
-        <div>
+        <div style={{overflowY: "scroll"}}>
             {checkedHumanVisitsData.map((visit) => {
                 const mappedCovisitors = (visit.co_visitors || []).map((human) => (
                     <HumanSquareInVisit title={`${human.name} ${human.surname}`} key={human.id} src={human.photo} />
@@ -52,6 +52,7 @@ export default function VisitsForLoggedUser({ humanId }) {
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem",  justifyContent: "space-evenly"}}>
                             {mappedCovisitors}
                         </div>
+                        <p>{visit.longDesc}</p>
                     </div>
                 )
             })}

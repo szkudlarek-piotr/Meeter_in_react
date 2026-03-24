@@ -34,7 +34,7 @@ import getHumanBasicInfoFromSessionToken from './getHumanBasicDataFromSessionTok
 import addDancingVideo from './addDancingVideo.js'
 import checkPassword from './checkLoginData.js'
 import cookieParser from 'cookie-parser'
-import getVisitsForLoggedHuman from './getVisitsForLoggedHuman.js'
+import getVisitsForLoggedHuman from './getVisitsForLoggedHumanFunctional.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
