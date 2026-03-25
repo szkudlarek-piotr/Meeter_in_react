@@ -1,11 +1,15 @@
 import styled from 'styled-components'
+import SingleVisitOfLoggedHuman from './SingleVisitOfLoggedHuman'
 import { useEffect, useState } from "react"
+
 
 const HumanSquareInVisit = styled.img`
     width: 10%;
     aspect-ratio: 1/1;
     border: 1px solid black;
     border-radius: 5px;
+    justify-content: space-evenly;
+    margin: 10px;
 `
 
 export default function VisitsForLoggedUser({ humanId }) {
@@ -46,14 +50,7 @@ export default function VisitsForLoggedUser({ humanId }) {
                 ))
 
                 return (
-                    <div key={visit.id} style={{ marginBottom: "1.5rem", marginLeft:"10%", width: "80%", justifyContent: "space-evenly" }}>
-                        <h2>{visit.name}</h2>
-                        <h3>{visit.date}</h3>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem",  justifyContent: "space-evenly"}}>
-                            {mappedCovisitors}
-                        </div>
-                        <p>{visit.longDesc}</p>
-                    </div>
+                    <SingleVisitOfLoggedHuman visitName={visit.name} visitDate={visit.date} longDesc={visit.longDesc} mappedHumans={mappedCovisitors} />
                 )
             })}
         </div>

@@ -16,6 +16,7 @@ export default async function getVisitsForLoggedHuman(sessionToken, checkedUser)
         v.visit_date AS start_date,
         v.short_description,
         v.visit_duration,
+        v.description AS long_description,
         ADDDATE(v.visit_date, INTERVAL (v.visit_duration - 1) DAY) AS stop_date,
         CONCAT(
             '[',
