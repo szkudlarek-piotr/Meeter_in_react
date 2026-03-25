@@ -118,10 +118,10 @@ export default function BasicHumanData({humanId}) {
 
     let spouseInfo = ""
     if (basicHumanData.spouse_name && basicHumanData.spouse_name.length > 0) {
-      if (basicHumanData.gender = "M") {
+      if (basicHumanData.gender == "M") {
         spouseInfo = `Jego żoną jest ${basicHumanData.spouse_name}.`
       }
-      if (basicHumanData.gender = "F") {
+      if (basicHumanData.gender == "F") {
         spouseInfo = `Jej mężem jest ${basicHumanData.spouse_name}.`
       }
     }
