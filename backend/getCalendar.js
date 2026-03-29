@@ -42,6 +42,44 @@ export default async function getCalendar(year) {
         current.setDate(current.getDate() + 1)
     }
 
+    // ================ WEDDINGS ================
+    
+    const weddingsQueryText = `
+    SELECT w.id, date, man_id, woman_id, partner_id, info_after_hover 
+    FROM weddings w
+    JOIN party_people man_name ON man_name.ID = w.man_id
+    JOIN party_people woman_name ON woman_name.ID = w.woman_id
+    LEFT JOIN party_people partner_name ON partner_name.ID = w.partner_id
+    WHERE was_i_invited = 1
+    AND YEAR(date) = ?
+    `
+    
+    const [weddingReq] = await pool.query(weddingsQueryText, [year])
+
+    
+    
+    if (weddingReq.length > 0) {
+        for (let wedding of weddingReq) {
+            let weddingDateAsString = wedding.date.toLocaleDateString('sv-SE')
+            const groomPhotoUrl = getHumanPhotoUrl(wedding.man_id)
+            const bridePhotoUrl = getHumanPhotoUrl(wedding.woman_id)
+            let partnerPhotoUrl = null
+            if (wedding.partner_id) {
+                partnerPhotoUrl = getHumanPhotoUrl(wedding.partner_id)
+            }
+            const weddingJson = {
+                class: "wedding",
+                title: wedding.info_after_hover,
+                manPhoto: groomPhotoUrl,
+                womanPhoto: bridePhotoUrl,
+                partnerPhoto: partnerPhotoUrl
+            }
+            daysObjects[weddingDateAsString] = weddingJson
+        }
+    }
+    
+
+
     // ================= VISITS =================
 
     const visitsQueryText = `

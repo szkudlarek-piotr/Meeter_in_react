@@ -54,6 +54,7 @@ app.use("/event-photo", express.static(path.join(__dirname, "events")));
 app.use("/superpowers", express.static(path.join(__dirname, "superpower_icons")));
 app.use("/map-icons", express.static(path.join(__dirname, "map_icons")));
 app.use("/trips", express.static(path.join(__dirname, "trips")));
+app.use("/functional-photos", express.static(path.join(__dirname, "functionalPhotos")));
 app.use(cookieParser())
 
 function getHumanPhotoUrl(humanId) {

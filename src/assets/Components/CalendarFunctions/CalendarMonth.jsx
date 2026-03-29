@@ -4,7 +4,7 @@ import GhostDay from "./GhostDay";
 import CalendarDay from "./CalendarDay";
 import FilledCalendarDay from "./FilledCalendarDay";
 import MonthHeader from "./MonthHeader";
-
+import WeddingWithPartnerDayTile from "./WeddingWithPartnerDayTIle";
 
 const Calendar = styled.div`
   display: flex;
@@ -54,10 +54,15 @@ export default function CalendarMonth({month, year, monthData, time}) {
             allRealDays.push(
                 <CalendarDay key={dayKey}>{dayLabel}</CalendarDay>
             );
-        } else {
+        } else if (dayData && dayData.class != "" && dayData.class != "wedding") {
             allRealDays.push(
                 <FilledCalendarDay time={time} dayClass={dayData.class} photosArr={dayData.photos} dayTitle={dayData.computedTitle}/>
             );
+        }
+        else if (dayData && dayData.class != "" && dayData.class === "wedding") {
+            allRealDays.push(
+                <WeddingWithPartnerDayTile  dayTitle={dayData.title} groomPhoto={dayData.manPhoto} bridePhoto={dayData.womanPhoto} partnerPhoto={dayData.partnerPhoto}/>
+            )
         }
     }
     return (
