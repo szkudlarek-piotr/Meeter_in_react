@@ -72,7 +72,10 @@ export default async function getCalendar(year) {
                 title: wedding.info_after_hover,
                 manPhoto: groomPhotoUrl,
                 womanPhoto: bridePhotoUrl,
-                partnerPhoto: partnerPhotoUrl
+                partnerPhoto: partnerPhotoUrl,
+                interactionsDict: {
+
+                }
             }
             daysObjects[weddingDateAsString] = weddingJson
         }
@@ -189,6 +192,8 @@ export default async function getCalendar(year) {
         const dayString = checkedDate.toLocaleDateString('sv-SE')
         const dayObj = daysObjects[dayString]
 
+        if (!dayObj || dayObj.class === "wedding") continue
+
         if (dayObj.class === "") {
             dayObj.class = "event"
         } else if (!dayObj.class.includes("event")) {
@@ -225,6 +230,10 @@ export default async function getCalendar(year) {
         const humanPhotoUrl = getHumanPhotoUrl(record.humanId)
         for (let checkedDate=dateStart; checkedDate<=dateStop; checkedDate.setDate(checkedDate.getDate() + 1)) {
             const dayString = checkedDate.toLocaleDateString('sv-SE')
+            const dayObj = daysObjects[dayString]
+
+            if (!dayObj || dayObj.class === "wedding") continue
+            
             if (daysObjects[dayString]["class"] === "") {
                 daysObjects[dayString] = {
                     "class": "trip",
@@ -280,5 +289,6 @@ export default async function getCalendar(year) {
             daysObjects[dateIdentifier]["computedTitle"] = daysObjects[dateIdentifier]["title"]
         }
     }
+    console.log(daysObjects)
     return daysObjects
 }

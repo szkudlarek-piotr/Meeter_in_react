@@ -5,6 +5,7 @@ import CalendarDay from "./CalendarDay";
 import FilledCalendarDay from "./FilledCalendarDay";
 import MonthHeader from "./MonthHeader";
 import WeddingWithPartnerDayTile from "./WeddingWithPartnerDayTIle";
+import WeddingWoPartnerDayTile from "./WeddingWoPartnerDayTIle";
 
 const Calendar = styled.div`
   display: flex;
@@ -59,11 +60,18 @@ export default function CalendarMonth({month, year, monthData, time}) {
                 <FilledCalendarDay time={time} dayClass={dayData.class} photosArr={dayData.photos} dayTitle={dayData.computedTitle}/>
             );
         }
-        else if (dayData && dayData.class != "" && dayData.class === "wedding") {
+        else if (dayData && dayData.class != "" && dayData.class === "wedding" && dayData.partnerPhoto ) {
             allRealDays.push(
-                <WeddingWithPartnerDayTile  dayTitle={dayData.title} groomPhoto={dayData.manPhoto} bridePhoto={dayData.womanPhoto} partnerPhoto={dayData.partnerPhoto}/>
+                <WeddingWithPartnerDayTile  dayTitle={dayData.title} groomPhoto={dayData.manPhoto} bridePhoto={dayData.womanPhoto} partnerPhoto={dayData.partnerPhoto} />
             )
         }
+        else if (dayData && dayData.class != "" && dayData.class === "wedding" && !dayData.partnerPhoto ) {
+            allRealDays.push(
+                <WeddingWoPartnerDayTile  dayTitle={dayData.title} groomPhoto={dayData.manPhoto} bridePhoto={dayData.womanPhoto} />
+            )
+        }
+
+
     }
     return (
         <div style={{justifyContent: "space-evenly"}}>

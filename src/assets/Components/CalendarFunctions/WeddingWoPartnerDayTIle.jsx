@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const WedingWithPartnerTile = styled.div`    
+const WedingWoPartnerTile = styled.div`    
     display: flex;
     background-color: #ec64de;
     align-items: center;
@@ -15,8 +15,8 @@ const WedingWithPartnerTile = styled.div`
     border-radius: 15px;
     &>.groomPhoto {
         width: 30%;
-        left: 10%;
-        top: 10%;
+        left: 12.5%;
+        top: 12.5%;
         z-index: 100;
         position: absolute;
         border: 1px solid black;
@@ -24,33 +24,24 @@ const WedingWithPartnerTile = styled.div`
     }
     &>.bridePhoto {
         width: 30%;
-        left: 60%;
-        top: 10%;
+        left: 62.5%;
+        top: 57.5%;
         z-index: 100;
         position: absolute;
         border: 1px solid black;
         border-radius: 5px;
-    }
-    &>.partnerPhoto {
-        width: 30%;
-        left: 35%;
-        top: 65%;
-        z-index: 100;
-        position: absolute;
-        border: 1px solid black;
-        border-radius: 5px;
-    }        
+    }      
     
     
     `
 
-export default function WeddingWithPartnerDayTile({dayTitle, partnerPhoto, groomPhoto, bridePhoto}) {
+export default function WeddingWoPartnerDayTile({dayTitle, groomPhoto, bridePhoto}) {
     return (
-        <WedingWithPartnerTile title={dayTitle}>
+        <WedingWoPartnerTile title={dayTitle}>
             <img className='groomPhoto' src={groomPhoto} />
+
+            <img src="http://localhost:3000/functional-photos/rings.png" style={{width: "30%", left:"36%", top:"38%", position: "absolute"}} />
             <img className='bridePhoto' src={bridePhoto} />
-            <img src="http://localhost:3000/functional-photos/rings.png" style={{width: "30%", left:"35%", top:"38%", position: "absolute"}} />
-            <img className="partnerPhoto" src={partnerPhoto} />
-        </WedingWithPartnerTile>
+        </WedingWoPartnerTile>
     )
 }
