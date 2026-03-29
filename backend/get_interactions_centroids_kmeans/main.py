@@ -13,23 +13,28 @@ def get_interctions_centroids(min_dist, human_id):
     engine = create_engine(os.getenv("db_connection_string"))
 
     sql = text("""
-SELECT p.latitude, p.longitude
-FROM places p 
-JOIN visits v ON p.id = v.place_id
-JOIN visit_guest vg ON vg.visit_id = v.visit_id
-WHERE vg.guest_id = :human_id
-UNION ALL
-SELECT p.latitude, p.longitude
-FROM places p 
-JOIN meetings m ON p.id = m.place_id
-JOIN meeting_human mh ON m.ID = mh.meeting_id
-WHERE mh.human_id = :human_id
-UNION ALL
-SELECT p.latitude, p.longitude
-FROM places p 
-JOIN events e ON e.place_id = p.id
-JOIN event_companion ec ON e.id = ec.event_id
-WHERE ec.human_id = :human_id;
+WITH crude_data AS (
+    SELECT p.latitude, p.longitude, POWER(0.5, DATEDIFF(CURRENT_DATE(), v.visit_date) / 365) AS weight
+    FROM places p 
+    JOIN visits v ON p.id = v.place_id
+    JOIN visit_guest vg ON vg.visit_id = v.visit_id
+    WHERE vg.guest_id = :human_id
+    UNION ALL
+    SELECT p.latitude, p.longitude,  POWER(0.5, DATEDIFF(CURRENT_DATE(), m.meeting_date) / 365) AS weight
+    FROM places p 
+    JOIN meetings m ON p.id = m.place_id
+    JOIN meeting_human mh ON m.ID = mh.meeting_id
+    WHERE mh.human_id = :human_id
+    UNION ALL
+    SELECT p.latitude, p.longitude, POWER(0.5, DATEDIFF(CURRENT_DATE(), e.meLeavingDate) / 365) AS weight
+    FROM places p 
+    JOIN events e ON e.place_id = p.id
+    JOIN event_companion ec ON e.id = ec.event_id
+    WHERE ec.human_id = :human_id
+)
+    SELECT latitude, longitude, SUM(weight) AS weight
+    FROM crude_data
+    GROUP BY latitude, longitude;               
     """)
 
     with engine.connect() as conn:
@@ -39,6 +44,8 @@ WHERE ec.human_id = :human_id;
         ).mappings().all()
 
     X = np.array([[row["latitude"], row["longitude"]] for row in rows])
+
+    weigths = [row["weight"] for row in rows]
 
     scaler = StandardScaler()
 
@@ -53,7 +60,7 @@ WHERE ec.human_id = :human_id;
             random_state=42,
             n_init="auto"
         )
-        labels = kmeans.fit_predict(X)
+        labels = kmeans.fit_predict(X, sample_weight= weigths)
 
         places_with_clusters = [
             {**row, "cluster": int(label)} for row, label in zip(rows, labels)
