@@ -289,6 +289,5 @@ export default async function getCalendar(year) {
             daysObjects[dateIdentifier]["computedTitle"] = daysObjects[dateIdentifier]["title"]
         }
     }
-    console.log(daysObjects)
     return daysObjects
 }

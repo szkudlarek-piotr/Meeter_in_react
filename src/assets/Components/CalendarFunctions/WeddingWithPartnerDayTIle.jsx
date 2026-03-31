@@ -50,7 +50,7 @@ export default function WeddingWithPartnerDayTile({dayTitle, partnerPhoto, groom
             <img className='groomPhoto' src={groomPhoto} />
             <img className='bridePhoto' src={bridePhoto} />
             <img src="http://localhost:3000/functional-photos/rings.png" style={{width: "30%", left:"35%", top:"38%", position: "absolute"}} />
-            <img className="partnerPhoto" src={partnerPhoto} />
+            <img className="partnerPhoto" src={partnerPhoto} alt="Zdjęcie partnera weselnego"/> 
         </WedingWithPartnerTile>
     )
 }

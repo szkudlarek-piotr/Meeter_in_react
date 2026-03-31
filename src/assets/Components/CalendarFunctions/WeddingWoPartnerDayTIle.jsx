@@ -14,18 +14,18 @@ const WedingWoPartnerTile = styled.div`
     margin-bottom: 10px;
     border-radius: 15px;
     &>.groomPhoto {
-        width: 30%;
-        left: 12.5%;
-        top: 12.5%;
+        width: 35%;
+        left: 10%;
+        top: 10%;
         z-index: 100;
         position: absolute;
         border: 1px solid black;
         border-radius: 5px;
     }
     &>.bridePhoto {
-        width: 30%;
-        left: 62.5%;
-        top: 57.5%;
+        width: 35%;
+        left: 55%;
+        top: 55%;
         z-index: 100;
         position: absolute;
         border: 1px solid black;
@@ -40,7 +40,7 @@ export default function WeddingWoPartnerDayTile({dayTitle, groomPhoto, bridePhot
         <WedingWoPartnerTile title={dayTitle}>
             <img className='groomPhoto' src={groomPhoto} />
 
-            <img src="http://localhost:3000/functional-photos/rings.png" style={{width: "30%", left:"36%", top:"38%", position: "absolute"}} />
+            <img src="http://localhost:3000/functional-photos/rings.png" style={{width: "30%", left:"36%", top:"38%", position: "absolute", zIndex: 101}} />
             <img className='bridePhoto' src={bridePhoto} />
         </WedingWoPartnerTile>
     )
