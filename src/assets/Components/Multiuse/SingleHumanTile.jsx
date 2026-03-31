@@ -60,7 +60,7 @@ export default function SingleHumanTile({headerText, photoDir, name, visits, mee
             <div className="fullName">{name}</div>
             <div className="interactionsCounter">Liczba wizyt: {visits}</div>
             <div className="interactionsCounter">Liczba spotkań: {meetings}</div>
-            <img className="clique_photo" src={cliquePhotoAdress} alt={cliqueName} />
+            <img className="clique_photo" src={cliquePhotoAdress} alt={cliqueName} title={cliqueName} />
             <div className="golden_quote" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(quote) }}
             ></div>
         </HumanTile>
