@@ -3,12 +3,46 @@ import CalendarMonth from "./CalendarMonth";
 import { useEffect, useState } from "react";
 
 
+const YearHeader = styled.div`
+    width: 80%;
+    height: 60px;
+    font-size: 30px;
+    font-weight: 700;
+    border: 5px solid black;
+    border-radius: 30px;
+`
+const YearControlContainer = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+`
 
+const ChangeYearIcon = styled.img`
+    width: 10%;
+    aspect-ratio: 1/1;
+    height: 50px;
+    cursor: pointer;
+`
 
 export default function NewCalendar() {
     const [year, setYear] = useState(2026);
     const [calendarData, setCalendarData] = useState({});
     const [time, setTime] = useState(0)
+
+    function decramentYear() {
+        setYear((year) => {
+            setYear(year-1)
+        })
+    }
+
+    function incramentYear() {
+        setYear((year) => {
+            setYear(year+1)
+        })
+    }
 
     useEffect(() => {
         const getYearData = async () => {
@@ -54,5 +88,15 @@ export default function NewCalendar() {
         />
     ));
 
-    return <>{allMonths}</>;
+    return (
+        <>
+            <YearControlContainer>
+                <ChangeYearIcon src="http://localhost:3000/functional-photos/toLeft.png" onClick={() => decramentYear()}/>
+                <YearHeader>{year}</YearHeader>
+                <ChangeYearIcon src="http://localhost:3000/functional-photos/toRight.png" onClick={() => incramentYear()}/>
+            </YearControlContainer>
+
+            {allMonths}
+        </>
+    );
 }
