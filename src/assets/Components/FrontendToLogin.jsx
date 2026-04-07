@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import ControlledTextInput from './Multiuse/SimpleControlledComponents/ControlledTextInput.jsx'
 import ControlledPasswordInput from './Multiuse/SimpleControlledComponents/ControlledPasswordInput .jsx'
+import InsertResultModal from "./Multiuse/InsertResultModal.jsx";
 import { useState } from 'react'
 
 const StyledButton = styled.button`
@@ -59,7 +60,11 @@ export default function FrontendToLogin() {
             <ControlledPasswordInput fieldValue={formState.password} changeFieldValue={(newValue) => setLoggingAtribute("password", newValue)} placeholder="Wpisz hasło..."/>
             
             <StyledButton onClick={() => tryToLogUser()}>Zaloguj się</StyledButton>
-
+            {
+                formState.status && (
+                    <InsertResultModal key={Date.now()} messageText={insertResult.message} status={formState.status} decayTime={DECAY_TIME} />
+                )
+            }                
         </>
     )
 }

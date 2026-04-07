@@ -24,8 +24,41 @@ import { leftMenuOptions } from './assets/data/lefttMenuOptions.js'
 function App() {
 
   const [ meeterPage, setMeeterPage ] = useState("news")
+  const [ loginStatus, setLoginStatus ] = useState({status: 0, name: ""})
 
 
+  useEffect(() => {
+    const getLoginStatus = async () => {
+      const response = await fetch(
+        `http://localhost:3000/get-login-status`,
+        { credentials: "include" }
+      )
+      const receivedInfo = await response.json()
+      console.log(receivedInfo)
+      setLoginStatus(receivedInfo)
+    }
+    getLoginStatus()
+  }, [])
+
+
+  const logoutFunctuon = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/logout", {
+        method: "PATCH",
+        credentials: "include"
+      })
+
+      if (!response.ok) {
+        throw new Error("Logout failed")
+      }
+
+      setLoginStatus({ status: 0, name: "" })
+      setMeeterPage("news")
+
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   let mainContent;
   switch (meeterPage) {
@@ -86,13 +119,19 @@ function App() {
 
   return (
     <>
-      <MenuElement width="20%" withHeader={true}>
+      <MenuElement username={loginStatus.name.user_name} width="20%" withHeader={true}>
+
         {leftMenuOptions.map(
           (option) => 
         <ChoiceOption id={option.id} key={option.id} onClick={() => setMeeterPage(option.state)}>
           {option.text}
         </ChoiceOption>
         )}
+        {loginStatus.status == 1 ? 
+          <ChoiceOption id="logout" key="logout" onClick={() => logoutFunctuon()}>Wyloguj się</ChoiceOption> : 
+          <ChoiceOption id="loginConditional" key="loginConditional" onClick={() => setMeeterPage("login")}>Zaloguj się</ChoiceOption>}
+        {loginStatus.status == 1 && <h2>Jesteś zalogowany jako {loginStatus.name.user_name}.</h2>}
+
       </MenuElement>
 
       <MainContent width="60%">

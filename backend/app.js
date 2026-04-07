@@ -35,6 +35,9 @@ import addDancingVideo from './addDancingVideo.js'
 import checkPassword from './checkLoginData.js'
 import cookieParser from 'cookie-parser'
 import getVisitsForLoggedHuman from './getVisitsForLoggedHumanFunctional.js'
+import checkLoginStatus from './checkLoginStatus.js'
+import getHumanMeetingsForLoggedHuman from './getHumanMeetingsForLoggedHuman.js'
+import logout from './logout.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -241,6 +244,18 @@ app.get("/human-meetings", async(req, res) => {
   }
 })
 
+app.get("/humman-meetings-for-logged-user", async(req, res) => {
+  const token = req.cookies.auth_token
+  const checkedHumanId = req.query.humanId
+  try {
+    const returnedMeetings = await getHumanMeetingsForLoggedHuman(token, checkedHumanId)
+    res.send(returnedMeetings)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
+
 app.get("/human-events", async(req, res) => {
   const humanId = req.query.humanId
   const years = req.query.years
@@ -263,7 +278,6 @@ app.get("/place-categories", async(req, res) => {
     res.send(error)
   }
 })
-
 
 app.get("/human-trips", async(req, res) => {
   const humanId = req.query.humanId
@@ -431,6 +445,18 @@ app.post('/login', async (req, res) => {
 
 })
 
+app.patch("/logout", async (req, res) => {
+  try {
+    const token = req.cookies.auth_token
+    await logout(token)
+
+    res.clearCookie("auth_token")
+    res.send({ message: "Logged out" })
+  }
+  catch (error) {
+    res.status(500).send(error)
+  }
+})
 
 app.post("/add-quote", async(req, res) => {
   const humanId = req.body.humanId
@@ -449,7 +475,6 @@ app.post("/add-quote", async(req, res) => {
 app.get("/basic-human-data-from-token", async (req, res) => {
   try {
     const token = req.cookies.auth_token
-    console.log(req.cookies)
     const humanData = await getHumanBasicInfoFromSessionToken(token)
     console.log(humanData)
     res.send(humanData)
@@ -469,6 +494,17 @@ app.get("/human-visits-for-logged-user", async(req, res) => {
   }
   catch (error) {
     res.status(500).json({ error: error.message })
+  }
+})
+
+app.get("/get-login-status", async(req, res) => {
+  try {
+    const token = req.cookies.auth_token
+    const loginStatus = await checkLoginStatus(token)
+    res.send(loginStatus)
+  }
+  catch (error) {
+    res.send({status: 0, name: ""})
   }
 })
 
