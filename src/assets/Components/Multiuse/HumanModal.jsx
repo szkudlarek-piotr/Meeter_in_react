@@ -14,6 +14,7 @@ import BasicHumanData from './HumanModalSubcomponents/BasicHumanData.jsx'
 import TripsDataInModal from "./HumanModalSubcomponents/TripsDataInModal.jsx";
 import InteractionsCentroidsMap from "./HumanModalSubcomponents/InteractionsCentroidsMap.jsx";
 import VisitsForLoggedUser from "./HumanModalSubcomponents/VisitsForLoggedUser.jsx";
+import MeetingsForLoggedUser from "./HumanModalSubcomponents/MeetingsForLoggedHuman.jsx";
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -267,9 +268,11 @@ let mappedEvents = eventsData.map((singleEvent) => (
             case "interactionsMap2":
               return <InteractionsMap humanId={humanId}/>
             case "interactionsCentroid":
-              return <InteractionsCentroidsMap humanId={humanId}/>
+              return <InteractionsCentroidsMap humanId={humanId} />
             case "visitsForLoggedUser":
-              return <VisitsForLoggedUser humanId={humanId}/>
+              return <VisitsForLoggedUser humanId={humanId} />
+            case "meetingsForLoggedUser":
+              return <MeetingsForLoggedUser humanId={humanId} />
         }
     }
 
@@ -279,15 +282,14 @@ let mappedEvents = eventsData.map((singleEvent) => (
         <MenuBox>
             <h2>Menu</h2>
             <ChoiceOption key="basicHumanModalData" onClick={() => setModalMode("basicData")}>Podstawowe dane</ChoiceOption>
-            <ChoiceOption key="humanModalVisits" onClick={() => setModalMode("visitsData")}>Wizyty</ChoiceOption>
-            <ChoiceOption key="humanModalMeetings" onClick={() => setModalMode("meetingsData")}>Spotkania</ChoiceOption>
+            <ChoiceOption key="humanModalVisits" onClick={() => setModalMode("visitsForLoggedUser")}>Wizyty</ChoiceOption>
+            <ChoiceOption key="humanModalMeetings" onClick={() => setModalMode("meetingsForLoggedUser")}>Spotkania</ChoiceOption>
             <ChoiceOption key="humanModalEvents" onClick={() => setModalMode("eventsData")}>Wydarzenia</ChoiceOption>
             <ChoiceOption key="humanModalTrips" onClick={() => setModalMode("tripsData")}>Podróże</ChoiceOption>
             <ChoiceOption key="humanModalQuotes" onClick={() => setModalMode("quotesData")}>Cytaty</ChoiceOption>
             <ChoiceOption key="relatiogram" onClick={() => setModalMode("relatiogram")}>Relacjogram</ChoiceOption>
             <ChoiceOption key="interactionsMap2" onClick={() => setModalMode("interactionsMap2")}>Mapa interakcji</ChoiceOption>
             <ChoiceOption key="interactionsCentroid" onClick={() => setModalMode("interactionsCentroid")}>Centroidy interakcji</ChoiceOption>
-            <ChoiceOption key="visitsForLoggedUser" onClick={() => setModalMode("visitsForLoggedUser")}>Wizyty (zalogowany użytkownik)</ChoiceOption>
         </MenuBox>
         <ContentBox>
             {renderContent()}
