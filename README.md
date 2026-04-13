@@ -71,7 +71,7 @@ Each meeting is represented by a marker corresponding to its **real-world locati
 
 ### Previous Iteration (Vanilla JavaScript)
 
-A video presenting the **latest visualisation from the previous Vanilla JavaScript iteration** is available here:  
-👉 https://youtu.be/D-qVszXLZdE
+A video presenting the **latest visualisation of the project** is available here:  
+👉 https://youtu.be/naJD0719bzo
 
 This version served as a conceptual and technical stepping stone toward the current React implementation.
