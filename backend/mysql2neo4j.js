@@ -183,6 +183,58 @@ async function copyEventCompanion() {
 }
 
 
+async function copyAllWeddings() {
+    const [weddingsReq] = await pool.query("SELECT * FROM weddings")
+    const weddings = weddingsReq.map(record => ({
+        id: record.id,
+        groom_id: record.man_id,
+        bride_id: record.woman_id,
+        date: record.date.toISOString().split("T")[0],
+        name: record.info_after_hover,
+        wasIInvited: record.was_i_invited
+    }))
+    const weddingshQueryNeo4j = `
+        UNWIND $weddings AS wedding
+        MERGE (w:Wedding {id: wedding.id})
+        SET w.name = wedding.name,
+            w.date = wedding.date,
+            w.was_i_invited = wedding.wasIInvited
+
+        WITH wedding, w
+
+        MATCH (g:Person {id: wedding.groom_id})
+        MATCH (b:Person {id: wedding.bride_id})
+
+        MERGE (g)-[:GROOMED]->(w)
+        MERGE (b)-[:BRIDED]->(w)
+            `
+    const driver = neo4j.driver(process.env.neo4j_address, neo4j.auth.basic('neo4j', process.env.neo4j_password));
+    const session = driver.session()
+    await session.run(weddingshQueryNeo4j, { weddings })
+    await session.close()
+    console.log("Dodano wesela do bazy.")
+}
+
+async function addGuestsToWedding() {
+    const sqlQueryText = `SELECT wedding_id, guest_id FROM wedding_guest;`
+    const [sqlQuery] = await pool.query(sqlQueryText)
+    const guestsArr = sqlQuery.map(record => ({
+        weddingId: record.wedding_id,
+        humanId: record.guest_id
+    }))
+    const wedGuestsGraphQuery = `
+    UNWIND $guestsArr AS record
+    MATCH (p:Person {id: record.humanId})
+    MATCH (w:Wedding {id: record.weddingId})
+    MERGE (p)-[:WENT_TO_WEDDING]->(w)
+    `
+    const driver = neo4j.driver(process.env.neo4j_address, neo4j.auth.basic('neo4j', process.env.neo4j_password));
+    const session = driver.session()
+    await session.run(wedGuestsGraphQuery, { guestsArr })
+    await session.close()
+    console.log("Dodano gości weselnych do bazy.")    
+}
+
 //copyAllPeople()
 //copyAllVisits()
 //copyVisitGuest()
@@ -190,3 +242,5 @@ async function copyEventCompanion() {
 //copyMeetingHuman()
 //copyAllEvents()
 //copyEventCompanion()
+//copyAllWeddings()
+addGuestsToWedding()
