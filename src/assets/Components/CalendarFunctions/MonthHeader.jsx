@@ -24,5 +24,5 @@ export default function MonthHeader({month, year}) {
     const polishMonthsNames = {"1": "Styczneń", "2": "Luty", "3": "Marzec", "4": "Kwiecień", "5":"Maj", "6": "Czerwiec", "7": "Lipiec", "8": "Sierpień", "9": "Wrzesień", "10": "Październik", "11": "Listopad", "12": "Grudzień"}
 
     const monthString = polishMonthsNames[month]
-    return (<MonthHeaderStyled>{monthString} {year}</MonthHeaderStyled>)
+    return (<MonthHeaderStyled>{monthString}</MonthHeaderStyled>)
 }
