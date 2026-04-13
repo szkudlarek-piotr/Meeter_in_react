@@ -77,8 +77,6 @@ export default async function getHumanMeetingsForLoggedHuman(token, checkedHuman
         const mappedMeetings = meetingsReq.map(meeting => {
         try {
             const people = JSON.parse(meeting.people_json)
-            console.log("RAW people_json:", meeting.people_json)
-            console.log("PARSED people:", people)
             return {
                 "id": meeting.ID,
                 "dateString": createDateString(meeting.meeting_date),
