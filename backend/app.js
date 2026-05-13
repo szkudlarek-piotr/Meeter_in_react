@@ -37,6 +37,7 @@ import cookieParser from 'cookie-parser'
 import getVisitsForLoggedHuman from './getVisitsForLoggedHumanFunctional.js'
 import checkLoginStatus from './checkLoginStatus.js'
 import getHumanMeetingsForLoggedHuman from './getHumanMeetingsForLoggedHuman.js'
+import getDancingVideos from './getDancingVideosData.js'
 import logout from './logout.js'
 
 
@@ -494,6 +495,16 @@ app.get("/human-visits-for-logged-user", async(req, res) => {
   }
   catch (error) {
     res.status(500).json({ error: error.message })
+  }
+})
+
+app.get("/dancing-videos", async (req, res) => {
+  try {
+    const data = await getDancingVideos();
+    res.send(data)
+  }
+  catch (error) {
+    res.send(error)
   }
 })
 
