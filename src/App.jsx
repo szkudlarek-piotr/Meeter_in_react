@@ -16,6 +16,7 @@ import FrontendToAddHuman from './assets/Components/FrontendToAddHuman.jsx'
 import FrontendToAddDancingVideo from './assets/Components/FrontendToAddDancingVideo.jsx'
 import FrontendToLogin from './assets/Components/FrontendToLogin.jsx'
 import BasicDataAboutYou from './assets/Components/BasicDataAboutYou.jsx'
+import FrontendToWatchDancingVideos from './assets/Components/FrontendToWatchDancingVideos.jsx'
 import { useState, useEffect } from 'react'
 
 
@@ -110,6 +111,9 @@ function App() {
       break;
     case "addDancingVideo":
       mainContent = <FrontendToAddDancingVideo />
+      break;
+    case "watchDancingVideos":
+      mainContent = <FrontendToWatchDancingVideos />
       break;
     case "guessQuoteAuthors":
       mainContent = <FrontendForGuessingQuoteAuthor/>

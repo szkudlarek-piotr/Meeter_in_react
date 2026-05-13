@@ -3,6 +3,7 @@ export const leftMenuOptions = [
     {"id": "infoAboutYou", "text": "Informacje o Tobie", "state": "basicDataAboutYou"},
     {"id": "showAllHumans", "text": "Pokaż wszystkich ludzi", "state": "allHumans"},
     {"id": "showCalendar", "text": "Pokaż kalendarz", "state": "calendar"},
+    {"id": "watchDancingVideos", "text": "Przeglądaj filmiki taneczne", "state": "watchDancingVideos"},
     {"id": "showAllCliques", "text": "Pokaż wszystkie kliki", "state": "allCliques"},
     {"id": "showDancingVideos", "text": "Pokaż filmiki taneczne", "state": "dancingVideos"},
     {"id": "addHuman", "text": "Dodaj człowieka", "state": "addHuman"},
