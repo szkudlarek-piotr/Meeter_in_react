@@ -23,24 +23,25 @@ const Calendar = styled.div`
 
 export default function CalendarMonth({month, year, monthData, time}) {
     const startOfMonth = new Date(year, month - 1, 1)
-    const firstMonthDayNumber = startOfMonth.getDay()
+    const firstMonthDayNumber = (startOfMonth.getDay() + 6) % 7
     const daysInMonth = new Date(year, month, 0).getDate()
-    const lastDayInMonth = new Date(year, month, daysInMonth)
-    const lastWeekdayInMonth = lastDayInMonth.getDay()
-    const polishMonthsNames = {"1": "Styczneń", "2": "Luty", "3": "Marzec", "4": "Kwiecień", "5":"Maj", "6": "Czerwiec", "7": "Lipiec", "8": "Sierpień", "9": "Wrzesień", "10": "Październik", "11": "Listopad", "12": "Grudzień"}
-    let numberOfGhostDaysBefore = firstMonthDayNumber % 7 - 1
-    if (numberOfGhostDaysBefore < 0) {
-        numberOfGhostDaysBefore = 6
+    const polishMonthsNames = {"1": "Styczeń", "2": "Luty", "3": "Marzec", "4": "Kwiecień", "5":"Maj", "6": "Czerwiec", "7": "Lipiec", "8": "Sierpień", "9": "Wrzesień", "10": "Październik", "11": "Listopad", "12": "Grudzień"}
+    let numberOfGhostDaysBefore
+    if (firstMonthDayNumber != 5) {
+        numberOfGhostDaysBefore = firstMonthDayNumber
     }
-    const numberOfGhostDaysAfter = (6 - lastWeekdayInMonth) % 7
+    else {
+        numberOfGhostDaysBefore = 5
+    }
+
    
     let ghostDaysBefore = []
     let allRealDays = []
     if (numberOfGhostDaysBefore > 0) {
         for (let i=0; i<numberOfGhostDaysBefore; i++) {
-            ghostDaysBefore.push(<GhostDay />)
+            ghostDaysBefore.push(<GhostDay key={`ghost-${i}`} />)
         }
-    } 
+    }
     for (let i = 1; i <= daysInMonth; i++) {
         const dayNumber = i;
         const dayStringNumber = String(i).padStart(2, "0");
