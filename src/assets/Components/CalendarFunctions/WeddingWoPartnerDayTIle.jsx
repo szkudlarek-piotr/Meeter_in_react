@@ -30,17 +30,23 @@ const WedingWoPartnerTile = styled.div`
         position: absolute;
         border: 1px solid black;
         border-radius: 5px;
+    }
+    &>.ringPhoto {
+        width: 30%;
+        left: 36%;
+        top: 38%;
+        position: absolute;
+        z-index: 101;
     }      
-    
-    
     `
+
 
 export default function WeddingWoPartnerDayTile({dayTitle, groomPhoto, bridePhoto}) {
     return (
         <WedingWoPartnerTile title={dayTitle}>
             <img className='groomPhoto' src={groomPhoto} />
 
-            <img src="http://localhost:3000/functional-photos/rings.png" style={{width: "30%", left:"36%", top:"38%", position: "absolute", zIndex: 101}} />
+            <img src="http://localhost:3000/functional-photos/rings.png" className='ringPhoto' />
             <img className='bridePhoto' src={bridePhoto} />
         </WedingWoPartnerTile>
     )
