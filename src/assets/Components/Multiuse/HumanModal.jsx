@@ -274,6 +274,8 @@ let mappedEvents = eventsData.map((singleEvent) => (
               return <VisitsForLoggedUser humanId={humanId} />
             case "meetingsForLoggedUser":
               return <MeetingsForLoggedUser humanId={humanId} />
+            case "quotesForLoggedHuman":
+              return <QuotesDataForLoggedHumanInModal humanId={humanId} headerText="Cytaty (dla osoby zalogowanej)"/>
         }
     }
 
@@ -291,6 +293,7 @@ let mappedEvents = eventsData.map((singleEvent) => (
             <ChoiceOption key="relatiogram" onClick={() => setModalMode("relatiogram")}>Relacjogram</ChoiceOption>
             <ChoiceOption key="interactionsMap2" onClick={() => setModalMode("interactionsMap2")}>Mapa interakcji</ChoiceOption>
             <ChoiceOption key="interactionsCentroid" onClick={() => setModalMode("interactionsCentroid")}>Centroidy interakcji</ChoiceOption>
+            <ChoiceOption key="quotesForLoggedHuman" onClick={() => setModalMode("quotesForLoggedHuman")}>Cytaty (zalogowany użytkownik)</ChoiceOption>
         </MenuBox>
         <ContentBox>
             {renderContent()}
