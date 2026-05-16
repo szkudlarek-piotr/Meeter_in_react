@@ -15,6 +15,7 @@ import TripsDataInModal from "./HumanModalSubcomponents/TripsDataInModal.jsx";
 import InteractionsCentroidsMap from "./HumanModalSubcomponents/InteractionsCentroidsMap.jsx";
 import VisitsForLoggedUser from "./HumanModalSubcomponents/VisitsForLoggedUser.jsx";
 import MeetingsForLoggedUser from "./HumanModalSubcomponents/MeetingsForLoggedHuman.jsx";
+import QuotesDataForLoggedHumanInModal from './HumanModalSubcomponents/QuotesDataForLoggedHumanInModal.jsx'
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
