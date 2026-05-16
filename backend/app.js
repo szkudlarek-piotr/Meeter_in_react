@@ -38,6 +38,7 @@ import getVisitsForLoggedHuman from './getVisitsForLoggedHumanFunctional.js'
 import checkLoginStatus from './checkLoginStatus.js'
 import getHumanMeetingsForLoggedHuman from './getHumanMeetingsForLoggedHuman.js'
 import getDancingVideos from './getDancingVideosData.js'
+import getQuotesForLoggedHuman from './getHumanQueotedForLoggedHuman.js'
 import logout from './logout.js'
 
 
@@ -316,6 +317,20 @@ app.get("/human-interactions-centroids", (req, res) => {
       res.json(JSON.parse(stdout))
     }
   )
+})
+
+app.get("/quotes-for-logged-human", async(req, res) => {
+  console.log("pukam do backendu.")
+  try {
+    const token = req.cookies.auth_token;
+    console.log(token)
+    const quotesAuthorId = req.query.humanId;
+    const quotes = await getQuotesForLoggedHuman(token, quotesAuthorId);
+    res.send(quotes)
+  }
+  catch (error) {
+    res.send(error)
+  }
 })
 
 app.post("/add-human", async(req, res) => {
