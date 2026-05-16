@@ -11,8 +11,6 @@ const pool = mysql.createPool({
 
 export default async function addMeeterUser(username, password, email) {
     const hashedPassword = await bcrypt.hash(password, 10)
-    console.log(hashedPassword)
     const [insertReq] = await pool.query("INSERT INTO login_data (username, email, passwordHash) VALUES (?, ?, ?)", [username, email, hashedPassword])
-    console.log(insertReq)
-
+    return insertReq[0]
 }
