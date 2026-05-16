@@ -10,6 +10,10 @@ const YearHeader = styled.div`
     font-weight: 700;
     border: 5px solid black;
     border-radius: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 const YearControlContainer = styled.div`
     display: flex;
