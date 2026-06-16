@@ -16,6 +16,8 @@ import InteractionsCentroidsMap from "./HumanModalSubcomponents/InteractionsCent
 import VisitsForLoggedUser from "./HumanModalSubcomponents/VisitsForLoggedUser.jsx";
 import MeetingsForLoggedUser from "./HumanModalSubcomponents/MeetingsForLoggedHuman.jsx";
 import QuotesDataForLoggedHumanInModal from './HumanModalSubcomponents/QuotesDataForLoggedHumanInModal.jsx'
+import EventsForLoggedUser from './HumanModalSubcomponents/EventsForLoggedUser.jsx'
+
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -276,6 +278,9 @@ let mappedEvents = eventsData.map((singleEvent) => (
               return <MeetingsForLoggedUser humanId={humanId} />
             case "quotesForLoggedHuman":
               return <QuotesDataForLoggedHumanInModal humanId={humanId} headerText="Cytaty (dla osoby zalogowanej)"/>
+            case "eventsForLoggedHuman":
+              return <EventsForLoggedUser humanId={humanId} />
+            
         }
     }
 
@@ -294,6 +299,7 @@ let mappedEvents = eventsData.map((singleEvent) => (
             <ChoiceOption key="interactionsMap2" onClick={() => setModalMode("interactionsMap2")}>Mapa interakcji</ChoiceOption>
             <ChoiceOption key="interactionsCentroid" onClick={() => setModalMode("interactionsCentroid")}>Centroidy interakcji</ChoiceOption>
             <ChoiceOption key="quotesForLoggedHuman" onClick={() => setModalMode("quotesForLoggedHuman")}>Cytaty (zalogowany użytkownik)</ChoiceOption>
+            <ChoiceOption key="eventsForLoggedHuman" onClick={() => setModalMode("eventsForLoggedHuman")}>Eventy (zalogowany użytkownik)</ChoiceOption>
         </MenuBox>
         <ContentBox>
             {renderContent()}
