@@ -24,7 +24,7 @@ import DropdownMenuForPlace from '../DropdownComponents/DropdownMenuForPlace2.js
 const StyledTextContainer = styled.div`
   font-size: 24px;
   font-family: cursive;
-  padding: 0 5%;
+  padding: 0 2.5%;
   overflow-y: auto;       
   flex: 1;               
   display: flex;
@@ -105,7 +105,7 @@ export default function InteractionsMap({humanId}) {
                     zoom={13}
                     scrollWheelZoom={true}
                     style={{
-                      width: "80%",
+                      width: "95%",
                       marginLeft: "auto",
                       marginRight: "auto",
                       border: "1px solid black",

@@ -17,7 +17,7 @@ const SingleTripElement = styled.div`
 `
 
 const PhotosContainer = styled.div`
-    width: 90%;
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
     min-height: 150px;
@@ -35,7 +35,7 @@ const SinglePhoto = styled.img`
 `
 
 const MapWrapper = styled.div`
-  width: 80%;
+  width: 95%;
   margin: 30px auto 20px;
   border: 1px solid black;
   height: 350px;   /* ALBO 40vh */
@@ -50,6 +50,7 @@ const StyledMapContainer = styled(MapContainer)`
 const getIconSafe = (category) => placeIcons[category] || L.Icon.Default.prototype
 
 
+
 const placeIcons = Object.fromEntries(
 Object.entries(placesCategoriesDict).map(([category, file]) => [
     category,
@@ -58,7 +59,7 @@ Object.entries(placesCategoriesDict).map(([category, file]) => [
         iconSize: [32, 32],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
-        className: category === "Dream direction" ? "unicorn-icon" : "",
+        className: category === "Dream direction" ? "unicorn-icon" : ""
     }),
 ])
 )
@@ -111,12 +112,12 @@ export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, 
 
     return (
         <SingleTripElement>
-            <h4>{shortDesc}</h4>
-            {(dateStart === dateStop) ? (<h4>{dateStart}</h4>) : (<h4>{dateStart} - {dateStop}</h4>)}
+            <h4 style={{marginTop: "2px", marginBottom: "2px"}}>{shortDesc}</h4>
+            {(dateStart === dateStop) ? (<h4 style={{marginTop: "10px", marginBottom: "2px"}}>{dateStart}</h4>) : (<h4 style={{marginTop: "10px", marginBottom: "2px"}}>{dateStart} - {dateStop}</h4>)}
 
             {mappedCompanion.length > 0 && (
                 <>
-                    <h6>Towarzysze podrózy</h6>
+                    <h6 style={{marginTop: "10px", marginBottom: "10px"}}>Towarzysze podrózy</h6>
                     <div style={{display: "flex", justifyContent: "space-evenly", gap: "15px"}}>
                         {mappedCompanion}
                     </div>
@@ -143,7 +144,7 @@ export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, 
             
                 {mappedPhotos.length > 0 && (
                     <>
-                        <h6>Zdjęcia</h6>
+                        <h6 style={{marginTop: "10px", marginBottom: "10px"}}>Zdjęcia</h6>
                         <PhotosContainer>
                             {mappedPhotos}
                         </PhotosContainer>
