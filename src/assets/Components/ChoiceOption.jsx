@@ -3,7 +3,7 @@ import styled from "styled-components";
 const MenuOption = styled.a`
     font-size: 20px;
     font-family: Times New Roman;
-    height: 30px;
+    min-height: 30px;
     text-align: center;
 
     
