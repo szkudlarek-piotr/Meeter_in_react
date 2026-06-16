@@ -81,7 +81,12 @@ export default function InteractionsMap({humanId}) {
       getVisitsData()
     }, [])
     
-    let mappedPlaces = placesData.map((place) => 
+
+    const filteredPlaces = placesData.filter(
+      place => place.category !== "Miasto"
+    );
+
+    let mappedPlaces = filteredPlaces.map((place) => 
     <Marker position={[place.lat, place.lng]} key={place.place_name} icon={getIconSafe(place.category)}>
         <Popup>
             <b>{place.place_name}</b><br/>

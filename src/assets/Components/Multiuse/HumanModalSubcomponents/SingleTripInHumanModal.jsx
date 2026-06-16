@@ -83,7 +83,7 @@ export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, 
         <SinglePhoto src={photo} key={photo}/>
     ))
     
-    let mappedPlaces = places.map((place) => 
+    let mappedPlaces = places.filter(place => place.category !== "Miasto").map((place) => 
     <Marker position={[place.latitude, place.longitude]} key={place.place_name} icon={getIconSafe(place.category)}>
         <Popup>
             <b>{place.place_name}</b><br/>
