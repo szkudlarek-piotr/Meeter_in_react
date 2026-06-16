@@ -40,6 +40,7 @@ import getHumanMeetingsForLoggedHuman from './getHumanMeetingsForLoggedHuman.js'
 import getDancingVideos from './getDancingVideosData.js'
 import getQuotesForLoggedHuman from './getHumanQueotedForLoggedHuman.js'
 import logout from './logout.js'
+import getHumanEventsForLoggedHuman from './getHumanEventsForLoggedHuman.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -496,6 +497,22 @@ app.get("/basic-human-data-from-token", async (req, res) => {
     res.send(humanData)
   }
   catch (error) {
+    res.send(error)
+  }
+})
+
+app.get("/human-events-for-logged-user", async(req, res) => {
+  console.log("próbuje dostać wydarzenia dla zalogowańca.")
+  try {
+    console.log(req.cookies)
+    const token = req.cookies.auth_token
+    const humanId = req.query.humanId
+    const eventsData = await getHumanEventsForLoggedHuman(token, humanId)
+    console.log(`W app.js mam ${JSON.stringify(eventsData)}.`)
+    res.send(eventsData)
+  }
+  catch(error) {
+    console.log(error)
     res.send(error)
   }
 })
