@@ -12,29 +12,29 @@ const pool = mysql.createPool({
 export default async function getCliques() {
     const cliquesAndHUmansQuery = `
         WITH all_interactions AS (
-        SELECT pp.id AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, v.visit_date AS interaction_date, ROUND(get_exponential_decay_fraction (v.visit_date, CURRENT_DATE(), 720), 3) * 6 AS points, cn.id AS clique_id, cn.clique_name
+        SELECT pp.id AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, v.visit_date AS interaction_date, COALESCE(ROUND(get_exponential_decay_fraction (v.visit_date, CURRENT_DATE(), 720), 3) * 6, 0) AS points, cn.id AS clique_id, cn.clique_name
         FROM party_people pp
         JOIN cliques_names cn ON pp.klika_id = cn.id
-        JOIN visit_guest vg ON pp.ID = vg.guest_id
-        JOIN visits v ON vg.visit_id = v.visit_id
+        LEFT JOIN visit_guest vg ON pp.ID = vg.guest_id
+        LEFT JOIN visits v ON vg.visit_id = v.visit_id
         UNION ALL
-        SELECT pp.id AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, m.meeting_date AS interaction_date, ROUND(get_exponential_decay_fraction (m.meeting_date, CURRENT_DATE(), 360), 3) * 3 AS points, cn.id AS clique_id, cn.clique_name
+        SELECT pp.id AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, m.meeting_date AS interaction_date, COALESCE(ROUND(get_exponential_decay_fraction (m.meeting_date, CURRENT_DATE(), 360), 3) * 3, 0) AS points, cn.id AS clique_id, cn.clique_name
         FROM party_people pp
         JOIN cliques_names cn ON pp.klika_id = cn.id
-        JOIN meeting_human mh ON pp.ID = mh.human_id
-        JOIN meetings m ON mh.meeting_id = m.ID
+        LEFT JOIN meeting_human mh ON pp.ID = mh.human_id
+        LEFT JOIN meetings m ON mh.meeting_id = m.ID
         UNION ALL
-        SELECT pp.id AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, e.meLeavingDate AS interaction_date, ROUND(get_exponential_decay_fraction(e.meLeavingDate, CURRENT_DATE(), 180), 3) * 1 AS points, cn.id AS clique_id, cn.clique_name
+        SELECT pp.id AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, e.meLeavingDate AS interaction_date, COALESCE(ROUND(get_exponential_decay_fraction(e.meLeavingDate, CURRENT_DATE(), 180), 3) * 1, 0) AS points, cn.id AS clique_id, cn.clique_name
         FROM party_people pp
         JOIN cliques_names cn ON pp.klika_id = cn.id
-        JOIN event_companion ec ON ec.human_id = pp.ID
-        JOIN events e ON e.id = ec.event_id
+        LEFT JOIN event_companion ec ON ec.human_id = pp.ID
+        LEFT JOIN events e ON e.id = ec.event_id
         UNION ALL
-        SELECT pp.ID AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, c.Date_stop AS interaction_date, ROUND(get_exponential_decay_fraction(c.Date_stop, CURRENT_DATE(), 3650), 3) * 3 AS points, cn.id AS clique_id, cn.clique_name
+        SELECT pp.ID AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name, c.Date_stop AS interaction_date, COALESCE(ROUND(get_exponential_decay_fraction(c.Date_stop, CURRENT_DATE(), 3650), 3) * 3, 0) AS points, cn.id AS clique_id, cn.clique_name
         FROM party_people pp
         JOIN cliques_names cn ON pp.klika_id = cn.id
-        JOIN citybreak_companion cc ON pp.ID = cc.human_id
-        JOIN citybreaks c ON cc.citybreak_id = c.ID
+        LEFT JOIN citybreak_companion cc ON pp.ID = cc.human_id
+        LEFT JOIN citybreaks c ON cc.citybreak_id = c.ID
         UNION ALL
         SELECT pp.ID AS human_id, CONCAT(pp.name, ' ', pp.surname) AS full_name
         , w.date AS interaction_date
