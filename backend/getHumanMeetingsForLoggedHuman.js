@@ -14,7 +14,7 @@ export default async function getHumanMeetingsForLoggedHuman(token, checkedHuman
         SELECT human_id 
         FROM sessions_data 
         WHERE session_token = ?
-        AND expire_date > CURRENT_DATE()
+        AND expire_date > CURRENT_TIMESTAMP()
     `
     const [askingHumanIdReq] = await pool.query(askingHumanIdReqText, [token])
     const requestorId = askingHumanIdReq[0]["human_id"]
@@ -34,8 +34,6 @@ export default async function getHumanMeetingsForLoggedHuman(token, checkedHuman
         const mappedMeetings = meetingsReq.map(meeting => {
         try {
             const people = JSON.parse(meeting.people_json)
-            console.log("RAW people_json:", meeting.people_json)
-            console.log("PARSED people:", people)
             return {
                 "id": meeting.ID,
                 "dateString": createDateString(meeting.meeting_date),
