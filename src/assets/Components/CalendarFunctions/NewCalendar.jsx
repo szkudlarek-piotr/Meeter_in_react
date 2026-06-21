@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CalendarMonth from "./CalendarMonth";
 import { useEffect, useState } from "react";
-
+import DayModal from "../Multiuse/DayModal";
 
 const YearHeader = styled.div`
     width: 80%;
@@ -34,18 +34,15 @@ const ChangeYearIcon = styled.img`
 export default function NewCalendar() {
     const [year, setYear] = useState(2026);
     const [calendarData, setCalendarData] = useState({});
-    const [time, setTime] = useState(0)
+    const [time, setTime] = useState(0);
+    const [dateInModal, setDateInModal] = useState(null);
 
-    function decramentYear() {
-        setYear((year) => {
-            setYear(year-1)
-        })
+    function decrementYear() {
+        setYear((prevYear) => prevYear - 1);
     }
 
-    function incramentYear() {
-        setYear((year) => {
-            setYear(year+1)
-        })
+    function incrementYear() {
+        setYear((prevYear) => prevYear + 1);
     }
 
     useEffect(() => {
@@ -89,15 +86,16 @@ export default function NewCalendar() {
             month={i + 1}
             monthData={getMonthData(i + 1)}
             time={time}
+            openModal={setDateInModal}
         />
     ));
 
     return (
         <>
             <YearControlContainer>
-                <ChangeYearIcon src="http://localhost:3000/functional-photos/toLeft.png" onClick={() => decramentYear()}/>
+                <ChangeYearIcon src="http://localhost:3000/functional-photos/toLeft.png" onClick={() => decrementYear()}/>
                 <YearHeader>{year}</YearHeader>
-                <ChangeYearIcon src="http://localhost:3000/functional-photos/toRight.png" onClick={() => incramentYear()}/>
+                <ChangeYearIcon src="http://localhost:3000/functional-photos/toRight.png" onClick={() => incrementYear()}/>
             </YearControlContainer>
 
             {allMonths}

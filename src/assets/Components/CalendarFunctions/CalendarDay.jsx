@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DayModalBox from '../Multiuse/DayModal.jsx'
 
 const DayStyle = styled.div`
     display: flex;
@@ -13,6 +14,7 @@ const DayStyle = styled.div`
     margin-bottom: 10px;
     border-radius: 15px;
 `
-export default function CalendarDay({children}) {
+export default function CalendarDay({children, onClick}) {
+
     return <DayStyle>{children}</DayStyle>
 }

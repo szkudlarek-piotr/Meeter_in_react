@@ -21,7 +21,7 @@ const Calendar = styled.div`
 
 ;
 
-export default function CalendarMonth({month, year, monthData, time}) {
+export default function CalendarMonth({month, year, monthData, time, openModal}) {
     const startOfMonth = new Date(year, month - 1, 1)
     const firstMonthDayNumber = (startOfMonth.getDay() + 6) % 7
     const daysInMonth = new Date(year, month, 0).getDate()
