@@ -15,9 +15,9 @@ const MeetingStyle = styled.div`
 export default function SingleMeetingOfLoggedHuman({shortDesc, place, date, longDesc, mappedHumans}) {
     return (
         <MeetingStyle>
-            <h2>{shortDesc}</h2>
-            <h3>{place}</h3>
-            <h3>{date}</h3>
+            <h2 style={{marginTop: "0px", marginBottom: "2px"}}>{shortDesc}</h2>
+            <h3 style={{marginTop: "0px", marginBottom: "2px"}}>{place}</h3>
+            <h3 style={{marginTop: "0px", marginBottom: "2px"}}>{date}</h3>
             <p>{longDesc}</p>
             <div>
                 {mappedHumans}
