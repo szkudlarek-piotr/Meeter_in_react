@@ -1,6 +1,21 @@
 import SimpleTextInput from "./SimpleTextInput";
+import { useState } from 'react'
 
 export default function FrontendToAddClique() {
+
+
+  const [cliqueData, setCliqueData]  = useState({
+    "name": "",
+    "photoUrl": ""
+  })
+
+  function updateAddedCliqueDetails(attributeName, attributeValue) {
+    setCliqueData(prev => ({
+      ...prev,
+      attributeName: attributeValue
+    }))
+  }
+
   return (
     <div>
       <h2>Nazwa kliki</h2>
