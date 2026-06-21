@@ -17,6 +17,8 @@ import FrontendToAddDancingVideo from './assets/Components/FrontendToAddDancingV
 import FrontendToLogin from './assets/Components/FrontendToLogin.jsx'
 import BasicDataAboutYou from './assets/Components/BasicDataAboutYou.jsx'
 import FrontendToWatchDancingVideos from './assets/Components/FrontendToWatchDancingVideos.jsx'
+import AllCliques from './assets/Components/AllCliques.jsx'
+import FrontendToModifyQuotesPrivacy from './assets/Components/ModifyQuotesPrivacy.jsx'
 import { useState, useEffect } from 'react'
 
 
@@ -35,7 +37,6 @@ function App() {
         { credentials: "include" }
       )
       const receivedInfo = await response.json()
-      console.log(receivedInfo)
       setLoginStatus(receivedInfo)
     }
     getLoginStatus()
@@ -78,9 +79,7 @@ function App() {
     case "calendar":
       mainContent = <NewCalendar year="2026"/>
       break;
-    case "allCliques":
-      mainContent = "Tu będą kliki";
-      break;
+
     case "dancingVideos":
       mainContent = "Tu będą filmiki taneczne";
       break;
@@ -94,7 +93,7 @@ function App() {
       //mainContent = "Tu będzie dodawanie spotkania";
       mainContent = <FrontendToAddMeeting/>
       break;
-    case "addClique":
+    case "addCliques":
       mainContent = <FrontendToAddClique/>
       break;
     case "addEvent":
@@ -117,6 +116,12 @@ function App() {
       break;
     case "guessQuoteAuthors":
       mainContent = <FrontendForGuessingQuoteAuthor/>
+      break;
+    case "allCliques":
+      mainContent = <AllCliques/>
+      break;
+    case "setQuotesPrivacy":
+      mainContent = <FrontendToModifyQuotesPrivacy/>
       break;
   }
 
