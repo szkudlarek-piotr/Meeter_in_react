@@ -41,6 +41,8 @@ import getDancingVideos from './getDancingVideosData.js'
 import getQuotesForLoggedHuman from './getHumanQueotedForLoggedHuman.js'
 import logout from './logout.js'
 import getHumanEventsForLoggedHuman from './getHumanEventsForLoggedHuman.js'
+import getQuotesForModyfyingQuotesPrivacy from './getQuotesForModifyingQuotesPrivacy.js'
+import changeQuotePrivacyFromTokenAndId from './changeQuotePrivacy.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -548,6 +550,32 @@ app.get("/get-login-status", async(req, res) => {
   }
   catch (error) {
     res.send({status: 0, name: ""})
+  }
+})
+
+app.get("/quotes-for-modifying-privacy", async(req, res) => {
+  try {
+    const token = req.cookies.auth_token;
+    const quotesData = await getQuotesForModyfyingQuotesPrivacy(token);
+    res.send(quotesData);
+  }
+  catch (error) {
+    res.send([error])
+  }
+})
+
+app.put("/update-quote-privacy", async(req, res) => {
+  try {
+    const token = req.cookies.auth_token;
+    console.log(req.body)
+    const quoteId = req.body.quoteId;
+    const targetPrivacy = req.body.targetPrivacy;
+    const quotePrivacyUpdateReq = await changeQuotePrivacyFromTokenAndId(token, quoteId, targetPrivacy);
+    res.send(quotePrivacyUpdateReq)
+
+  }
+  catch (error) {
+    res.send(error);
   }
 })
 
