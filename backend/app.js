@@ -39,10 +39,12 @@ import checkLoginStatus from './checkLoginStatus.js'
 import getHumanMeetingsForLoggedHuman from './getHumanMeetingsForLoggedHuman.js'
 import getDancingVideos from './getDancingVideosData.js'
 import getQuotesForLoggedHuman from './getHumanQueotedForLoggedHuman.js'
+import getCliques from './getCliquesData.js'
 import logout from './logout.js'
 import getHumanEventsForLoggedHuman from './getHumanEventsForLoggedHuman.js'
 import getQuotesForModyfyingQuotesPrivacy from './getQuotesForModifyingQuotesPrivacy.js'
 import changeQuotePrivacyFromTokenAndId from './changeQuotePrivacy.js'
+import addClique from './addClique.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -323,13 +325,22 @@ app.get("/human-interactions-centroids", (req, res) => {
 })
 
 app.get("/quotes-for-logged-human", async(req, res) => {
-  console.log("pukam do backendu.")
   try {
     const token = req.cookies.auth_token;
     console.log(token)
     const quotesAuthorId = req.query.humanId;
     const quotes = await getQuotesForLoggedHuman(token, quotesAuthorId);
     res.send(quotes)
+  }
+  catch (error) {
+    res.send(error)
+  }
+})
+
+app.get("/get-cliques-data", async(req, res) => {
+  try {
+    const data = await getCliques()
+    res.send(data)
   }
   catch (error) {
     res.send(error)
@@ -434,6 +445,20 @@ app.post("/add-event-companion", async(req, res) => {
   }
   catch (error) {
     res.send(error)
+  }
+})
+
+app.post("/add-clique", async(req, res) => {
+  const cliqueName = req.body.cliqueName;
+  const cliquePhotoUrl = req.body.cliquePhotoUrl;
+  console.log(cliquePhotoUrl);
+  try {
+    const response = await addClique(cliqueName, cliquePhotoUrl);
+    res.send(response);
+  }
+  catch (error) {
+    console.log(error);
+    res.send(error);
   }
 })
 
@@ -594,8 +619,8 @@ app.post("/add-place", async(req, res) => {
 })
 
 
-app.post("add-dancing-video", async(req, res) => {
-  const videoLink = req.body.fbLink
+app.post("/add-dancing-video", async(req, res) => {
+  const videoLink = req.body.videoLink
   try {
     const addVideoResult = await addDancingVideo(videoLink)
     res.send(addVideoResult)

@@ -9,7 +9,7 @@ const TwinContainer = styled.div`
     min-height: 500px;
     display: flex;
     justify-content: space-evenly;
-    margin-top: 80px;
+    margin-top: 20px;
     margin-bottom: 50px;
 
 `
@@ -170,6 +170,7 @@ export default  function FrontendToModifyQuotesPrivacy() {
 
     return (
         <DndContext onDragEnd={changeQuotePrivacy}>
+            <h1 style={{marginTop: "2px", marginBottom: "2px"}}>Prywatność Twoich cytatów</h1>
             <TwinContainer>
 
                 <QuotesColumn id="privateQuotes">
