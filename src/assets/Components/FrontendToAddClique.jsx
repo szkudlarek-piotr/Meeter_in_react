@@ -30,7 +30,7 @@ export default function FrontendToAddClique() {
             })
           })
           const responseJson = await insertResult.json();
-          console.log(responseJson);
+          setCliqueData({"name": "", "photoUrl": ""})
 
     }
     catch (error) {
