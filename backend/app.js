@@ -103,11 +103,14 @@ function getEventPhotoUrl(eventPhotoInput) {
 function getCliquePhotoUrl(cliqueId) {
   const photosDir = path.join(__dirname, "cliques_photos");
   const jpgPhotoPath = path.join(photosDir, `${cliqueId}.jpg`);
+  const jpegPhotoPath = path.join(photosDir, `${cliqueId}.jpeg`);
   const pngPhotoPath = path.join(photosDir, `${cliqueId}.png`);
   const defaultPhoto = "/clique-photo/default.jpg"; // jeśli chcesz mieć obrazek zastępczy
 
   if (fs.existsSync(jpgPhotoPath)) {
     return `/clique-photo/${cliqueId}.jpg`;
+  } else if (fs.existsSync(jpegPhotoPath)) {
+    return `/clique-photo/${cliqueId}.jpeg`;
   } else if (fs.existsSync(pngPhotoPath)) {
     return `/clique-photo/${cliqueId}.png`;
   } else {
