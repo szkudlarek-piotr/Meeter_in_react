@@ -87,7 +87,7 @@ export default function QuotesDataForLoggedHumanInModal({humanId, headerText}) {
   }, [humanId])
 
 
-
+  let mappedQuotes = [];
 
 
     function setQuotePrivacy(e) {
@@ -115,24 +115,30 @@ export default function QuotesDataForLoggedHumanInModal({humanId, headerText}) {
       setQuoteInserterState(setInitialState())
     }
     
-  
 
-  let mappedQuotes = quoteData.map((quote) => (
-    
-      <StyledQuoteInQuotesList key={quote.quote_id}
-        dangerouslySetInnerHTML={{
-          __html: `"${sanitizeHtml(quote.quote)}"`,
-        }}
-      />
-  ))
+    try {
+      mappedQuotes = quoteData.map((quote) => (
+        
+          <StyledQuoteInQuotesList key={quote.quote_id}
+            dangerouslySetInnerHTML={{
+              __html: `"${sanitizeHtml(quote.quote)}"`,
+            }}
+          />
+      ))
+    }
+    catch {
+      console.log("Niezalogowani użytkownicy nie moga przeglądać cytatów.")
+    }
+
+
 
   return (
       <>
         
         
         <StyledTextContainer>
-          <h2 style={{fontSize: "36px", fontWeight: "700"}}>{headerText}</h2>
-          {mappedQuotes}
+          {mappedQuotes.length > 0  && <h2 style={{fontSize: "36px", fontWeight: "700"}}>{headerText}</h2>}
+          {mappedQuotes.length > 0 ? mappedQuotes : <h2>Zaloguj się, aby zobaczyć cytaty</h2>}
           <h2>Dodaj nowy cytat</h2>
           <ControlledTextArea style={{marginLeft: "auto", marginRight: "auto"}} id="quoteInputForGivenPerson" height="200px" placeholderValue="Wpisz nowy cytat!" fieldValue={quoteInserterState.quoteValue} changeFieldValue={(v) =>setQuoteInserterState(prev => ({ ...prev, quoteValue: v }))} />
           <RadioOptionsPicker header="Czy cytat ma być publiczny?" options={[ { value: "1", text: "Tak" }, { value: "0", text: "Nie" }]} chosenOptionName={quoteInserterState.isPublic} onChangeFunction={setQuotePrivacy} /> <br/>          
