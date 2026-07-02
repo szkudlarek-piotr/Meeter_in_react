@@ -5,6 +5,7 @@ import path from "path"
 import { fileURLToPath } from "url"
 import getHumanPhotoUrl from './getHumanPhotoUrl.js'
 import createDateString from './multiuseFunctions/dateToString.js'
+import getTripCostsInPln from './getTripCostsInPln.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 dotenv.config()
@@ -28,8 +29,9 @@ export default async function getHumanTrips(human_id) {
     const [tripsQuery] = await pool.query(queryText, [human_id])
     const tripsDict = {}
     for (let trip of tripsQuery) {
+        const tripCost = await getTripCostsInPln(trip.trip_id)
         if (!tripsDict.hasOwnProperty(trip.trip_start)) {
-            tripsDict[trip.trip_start] = {"id": trip.trip_id, "short_desc": trip.trip_short_description, "trip_start": createDateString(trip.trip_start), "trip_stop": createDateString(trip.trip_stop), "companion": [{"name": trip.full_name, "photo": getHumanPhotoUrl(trip.human_id)}]}
+            tripsDict[trip.trip_start] = {"id": trip.trip_id, "short_desc": trip.trip_short_description, "trip_start": createDateString(trip.trip_start), "trip_stop": createDateString(trip.trip_stop), "companion": [{"name": trip.full_name, "photo": getHumanPhotoUrl(trip.human_id)}], "cost": tripCost}
             
         }
         else {
@@ -55,6 +57,7 @@ export default async function getHumanTrips(human_id) {
 
     }
     const trips_arr = Object.values(tripsDict)
+    console.log(trips_arr)
     return trips_arr
 }
-getHumanTrips(7)
+

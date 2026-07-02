@@ -78,7 +78,7 @@ function FitMapToMarkers({ places }) {
   return null;
 }
 
-export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, shortDesc, places, companion}) {
+export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, shortDesc, places, companion, cost}) {
     
     const mappedPhotos = photosArr.map((photo) => (
         <SinglePhoto src={photo} key={photo}/>
@@ -148,6 +148,7 @@ export default function SingleTripInHumanModal({dateStart, dateStop, photosArr, 
                         <PhotosContainer>
                             {mappedPhotos}
                         </PhotosContainer>
+                        {cost > 0 && <p>Koszty tej podróy udokumentowane w Meeterze to {cost} PLN.</p>}
                     </>)}
             
 

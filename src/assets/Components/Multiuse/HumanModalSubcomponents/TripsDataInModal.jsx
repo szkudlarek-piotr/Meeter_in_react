@@ -10,13 +10,15 @@ export default function TripsDataInModal({humanId}) {
         const getHumanTrips = async () => {
             const tripsReq = await fetch(`http://localhost:3000/human-trips?humanId=${humanId}`)
             const tripsJson = await tripsReq.json()
+            console.log(tripsJson)
             setTripsData(tripsJson)
         }
         getHumanTrips()
+        
     }, [])
 
     const mappedTrips = tripsData.map((trip) => (
-        <SingleTripInHumanModal dateStart={trip.trip_start} dateStop={trip.trip_stop} shortDesc={trip.short_desc} photosArr={trip.photos} places={trip.places} companion={trip.companion}/>))
+        <SingleTripInHumanModal dateStart={trip.trip_start} dateStop={trip.trip_stop} shortDesc={trip.short_desc} photosArr={trip.photos} places={trip.places} companion={trip.companion} cost={trip.cost}/>))
 
     return (
         <>
